@@ -47,7 +47,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">酒店名</label>
             <div class="col-sm-10">
-                <input type="text" name="hname" class="form-control" placeholder="请输入酒店名字" value="龙鼎">
+                <input type="text" name="hname" class="form-control" placeholder="请输入酒店名字" value="龙鼎hua">
             </div>
         </div>
         <div class="form-group">
