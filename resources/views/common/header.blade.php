@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">酒店</a></li>
-                <li><a href="#">餐</a></li>
+                <li class="active"><a href="/hotel">酒店</a></li>
+                <li><a href="/food">餐</a></li>
                 <li><a href="#">车队</a></li>
                 <li><a href="#">门票</a></li>
                 <li><a href="#">导游</a></li>

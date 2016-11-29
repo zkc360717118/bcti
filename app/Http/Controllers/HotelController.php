@@ -13,7 +13,10 @@ class HotelController extends Controller
      * 酒店展示页面
      */
     public function show(){
+        $h = new Hotel();
+        $a = $h->all();
 
+        return view('hotel.show',['allhotel'=>$a]);
     }
 
     /*
@@ -32,69 +35,83 @@ class HotelController extends Controller
             $h->tel=$r->tel;
             $h->note=$r->note;
             //1-12月份数据的搜集
-            for ($i=0;$i<count($r->jan);$i++){
-                $h->jan.=$r->jan[$i].'|';
-            }
-            $h->jan = rtrim($h->jan,'|');
-
-            for ($i=0;$i<count($r->feb);$i++){
-                $h->feb.=$r->feb[$i].'|';
-            }
-            $h->feb = rtrim($h->feb,'|');
-
-            for ($i=0;$i<count($r->mar);$i++){
-                $h->mar.=$r->mar[$i].'|';
-            }
-            $h->mar = rtrim($h->mar,'|');
-
-            for ($i=0;$i<count($r->apr);$i++){
-                $h->apr.=$r->apr[$i].'|';
-            }
-            $h->apr = rtrim($h->apr,'|');
-
-            for ($i=0;$i<count($r->may);$i++){
-                $h->may.=$r->may[$i].'|';
-            }
-            $h->may = rtrim($h->may,'|');
-
-            for ($i=0;$i<count($r->june);$i++){
-                $h->june.=$r->june[$i].'|';
-            }
-            $h->june = rtrim($h->june,'|');
-
-            for ($i=0;$i<count($r->july);$i++){
-                $h->july.=$r->july[$i].'|';
-            }
-            $h->july = rtrim($h->july,'|');
-
-            for ($i=0;$i<count($r->aug);$i++){
-                $h->aug.=$r->aug[$i].'|';
-            }
-            $h->aug = rtrim($h->aug,'|');
-
-            for ($i=0;$i<count($r->sep);$i++){
-                $h->sep.=$r->sep[$i].'|';
-            }
-            $h->sep = rtrim($h->sep,'|');
-
-            for ($i=0;$i<count($r->oct);$i++){
-                $h->oct.=$r->oct[$i].'|';
-            }
-            $h->oct = rtrim($h->oct,'|');
-
-            for ($i=0;$i<count($r->nov);$i++){
-                $h->nov.=$r->nov[$i].'|';
-            }
-            $h->nov = rtrim($h->nov,'|');
-
-            for ($i=0;$i<count($r->dec);$i++){
-                $h->dec.=$r->dec[$i].'|';
-            }
-            $h->dec = rtrim($h->dec,'|');
-
-            dd($h);
+            $m = ['jan','feb','mar','apr','may','june','july','aug','sep','oct','nov','dec'];
+                for ($k=0;$k<count($m);$k++) {
+                    //先把每月2-4个价格搜集起来 成为“180|200” 或者 “180|200|300|400”
+                    for ($i=0;$i<count($r->input($m[$k]));$i++){
+                        $h->$m[$k].=$r->input("$m[$k].$i").'|';
+                    }
+                    //如果是4个价格，则从中间把|替换成换行符并去掉最后一个|, 否则就只是把最后一个|去掉
+                    if(substr_count($h->$m[$k],'|')==4){
+                        $p='/^(\d+\|\d+)\|(\d+\|\d+)\|$/';
+                        $h->$m[$k]=preg_replace($p,'\1'."<br>".'\2',$h->$m[$k]);
+                    }else{
+                        $h->$m[$k]=rtrim($h->$m[$k],'|');
+                    }
+                }
+            return $h->save() ? redirect('/hotel'):'更新失败，联系kevin';
         }
 
     }
+
+    /*
+    酒店信息的更改
+    */
+    public function edit($h,Request $r){
+        if(empty($_POST)){
+            //显示当前酒店的信息
+            $hotel=Hotel::find($h);
+            $m = ['jan','feb','mar','apr','may','june','july','aug','sep','oct','nov','dec'];
+            for ($i=0; $i < count($m) ; $i++) {
+
+                $pattern = '/^(\d{3,4})\|(\d{3,5})(<br>)(\d{3,4})\|(\d{3,5})$/';//针对4个价格的正则
+                $p='/\|/'; //针对2个价格的正则
+                $replacement = '$1,$2,$4,$5';//把4个价格的| 换成逗号
+                $coma=',';//把2个价格的中间换成逗号
+
+                if(strlen($hotel->$m[$i])>9){
+                    $md = preg_replace($pattern, $replacement,$hotel->$m[$i]);
+                    $data[$m[$i]] = explode(',',$md);
+                }else{
+                    $md = preg_replace($p, $coma,$hotel->$m[$i] );
+                }
+                $hotel->$m[$i]= explode(',',$md);
+            }
+
+            return view('hotel.edit',['data'=>$hotel]);
+        }else{
+            //更新酒店信息
+            //接收post ，添加酒店信息
+            $hotel= Hotel::find($h);
+            $hotel->city=$r->city;
+            $hotel->hname=$r->hname;
+            $hotel->star=$r->star;
+            $hotel->tel=$r->tel;
+            $hotel->note=$r->note;
+
+            //1-12月份数据的搜集
+            $m = ['jan','feb','mar','apr','may','june','july','aug','sep','oct','nov','dec'];
+            for ($k=0;$k<count($m);$k++) {
+                //先把每月2-4个价格搜集起来 成为“180|200” 或者 “180|200|300|400”
+                $hotel->$m[$k]=$r->input("$m[$k].0").'|';
+
+                for ($i=1;$i<count($r->input($m[$k]));$i++){
+                    $hotel->$m[$k].=$r->input("$m[$k].$i").'|';
+                }
+                //如果是4个价格，则从中间把|替换成换行符并去掉最后一个|, 否则就只是把最后一个|去掉
+                if(substr_count($hotel->$m[$k],'|')==4){
+                    $p='/^(\d+\|\d+)\|(\d+\|\d+)\|$/';
+                    $hotel->$m[$k]=preg_replace($p,'\1'."<br>".'\2',$hotel->$m[$k]);
+                }else{
+                    $hotel->$m[$k]=rtrim($hotel->$m[$k],'|');
+                }
+            }
+
+            return $hotel->save() ? redirect('/hotel'):'更新失败，联系kevin';
+        }
+
+
+    }
+
 
 }

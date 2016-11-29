@@ -16,7 +16,7 @@ class CreateTableHotels extends Migration
             $table->increments('hid');
             $table->string('city');
             $table->string('hname')->unique()->index();
-            $table->smallInteger('star');
+            $table->string('star');
             $table->string('tel')->default('');
             $table->string('note');
             $table->string('jan');

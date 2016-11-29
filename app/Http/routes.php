@@ -28,4 +28,40 @@ Route::get('/', 'HomeController@index'); //php artisan make:atuh 自动生成
  */
 Route::get('/hotel', 'HotelController@show');
 Route::any('/hoteladd', 'HotelController@add');
+Route::any('/hotelEdit/{h?}', 'HotelController@edit');
+
+/*
+ * 餐厅类路由
+ */
+Route::get('/food','FoodController@show');
+Route::any('/foodadd','FoodController@add');
+Route::any('/foodEdit/{f?}','FoodController@edit');
+
+/*
+ *车队类路由
+ */
+Route::get('/car','CarController@show');
+Route::any('/caradd','CarController@add');
+Route::any('/carEdit/{c?}','CarController@edit');
+
+/*
+门票类路由
+*/
+Route::get('/ticket','TicketController@show');
+Route::any('/ticketadd','TicketController@add');
+Route::any('/ticketEdit/{t?}','TicketController@edit');
+
+/*
+ * 导游类路由
+ */
+Route::get('/guide','GuideController@show');
+Route::any('/guideadd','GuideController@add');
+Route::any('/guideEdit/{g?}','GuideController@edit');
+
+
+
+
+
+
+
 
