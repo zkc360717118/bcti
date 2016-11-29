@@ -58,12 +58,12 @@
             <label  class="col-sm-2 control-label">语种：</label>
             <div class="col-sm-10">
                 <select name="lan">
-                    <option value="1"<?php if($d['lan']==1){echo ‘selected’;}?>>英语</option>
-                    <option value="2" <?php if($d['lan']==2){echo ‘selected’;}?>>越南语</option>
-                    <option value="3" <?php if($d['lan']==3){echo ‘selected’;}?>>泰语</option>
-                    <option value="4" <?php if($d['lan']==4){echo ‘selected’;}?>>法语</option>
-                    <option value="5" <?php if($d['lan']==5){echo ‘selected’;}?>>马来西亚语</option>
-                    <option value="6" <?php if($d['lan']==6){echo ‘selected’;}?>>日语</option>
+                    <option value="1"<?php if($d['lan']==1){echo 'selected';}?>>英语</option>
+                    <option value="2" <?php if($d['lan']==2){echo 'selected';}?>>越南语</option>
+                    <option value="3" <?php if($d['lan']==3){echo 'selected';}?>>泰语</option>
+                    <option value="4" <?php if($d['lan']==4){echo 'selected';}?>>法语</option>
+                    <option value="5" <?php if($d['lan']==5){echo 'selected';}?>>马来西亚语</option>
+                    <option value="6" <?php if($d['lan']==6){echo 'selected';}?>>日语</option>
                 </select>
             </div>
         </div>
