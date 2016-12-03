@@ -21,8 +21,7 @@
             $(this).hide();
             //取消按钮显示
             $(this).next().show();
-
-            //更改内容
+            //然后更改内容
             $(this.parentNode).children().first().attr('placeholder','上半月团队价格');
             $(this.parentNode).children().eq(1).attr('placeholder','上半月散客价格');
             $(this.parentNode).children().eq(2).attr('placeholder','下半月团队价格');
@@ -89,8 +88,13 @@
                 @foreach($data->jan as $j)
                 <input type="text" name="jan[]" class="col-sm-2 input-sm"  value="{{$j}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
+                @if(count($data->jan)==4)
+                <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
                 <button type="button" class="btn btn-default " >取消</button>
+                    @elseif(count($data->jan)==2)
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                @endif
             </div>
         </div>
 
@@ -100,8 +104,13 @@
                 @foreach($data->feb as $f)
                 <input type="text" name="feb[]" class="col-sm-2 input-sm"  value="{{$f}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->feb)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
 
@@ -111,8 +120,13 @@
                 @foreach($data->mar as $ma)
                 <input type="text" name="mar[]" class="col-sm-2 input-sm"  value="{{$ma}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->mar)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
 
@@ -122,8 +136,13 @@
                 @foreach($data->apr as $ap)
                 <input type="text" name="apr[]" class="col-sm-2 input-sm"  value="{{$ap}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->apr)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -132,8 +151,13 @@
                 @foreach($data->may as $may)
                 <input type="text" name="may[]" class="col-sm-2 input-sm"  value="{{$may}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->may)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -142,8 +166,13 @@
                 @foreach($data->june as $z)
                     <input type="text" name="june[]" class="col-sm-2 input-sm"  value="{{$z}}">
                 @endforeach
-                    <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default">取消</button>
+                    @if(count($data->june)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -152,8 +181,13 @@
                 @foreach($data->july as $z)
                     <input type="text" name="july[]" class="col-sm-2 input-sm"  value="{{$z}}" >
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->july)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -162,8 +196,13 @@
                 @foreach($data->aug as $z)
                     <input type="text" name="aug[]" class="col-sm-2 input-sm"  value="{{$z}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->aug)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -172,8 +211,13 @@
                 @foreach($data->sep as $z)
                     <input type="text" name="sep[]" class="col-sm-2 input-sm" value="{{$z}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->sep)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -182,8 +226,13 @@
                 @foreach($data->oct as $z)
                     <input type="text" name="oct[]" class="col-sm-2 input-sm"  value="{{$z}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default" >取消</button>
+                    @if(count($data->oct)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -192,8 +241,13 @@
                 @foreach($data->nov as $z)
                     <input type="text" name="nov[]" class="col-sm-2 input-sm"  value="{{$z}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default"  >取消</button>
+                    @if(count($data->oct)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <div class="form-group">
@@ -202,8 +256,13 @@
                 @foreach($data->dec as $z)
                     <input type="text" name="dec[]" class="col-sm-2 input-sm"  value="{{$z}}">
                 @endforeach
-                <button type="button" class="btn btn-info">增加特殊情况</button>
-                <button type="button" class="btn btn-default"  >取消</button>
+                    @if(count($data->dec)==4)
+                        <button type="button" class="btn btn-info" style="display:none;">增加特殊情况</button>
+                        <button type="button" class="btn btn-default " >取消</button>
+                    @else
+                        <button type="button" class="btn btn-info">增加特殊情况</button>
+                        <button type="button" class="btn btn-default" style="display:none" >取消</button>
+                    @endif
             </div>
         </div>
         <button type="submit" class="btn btn-block btn-primary">提交</button>
