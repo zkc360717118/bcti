@@ -26,7 +26,7 @@
                         <li><a href="#">行程碎片</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#">报价</a>
+                        <li><a href="#">英文报价</a>
                         </li>
                     </ul>
                 </li>
