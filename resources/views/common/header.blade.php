@@ -20,6 +20,7 @@
                 <li><a href="#">车队</a></li>
                 <li><a href="#">门票</a></li>
                 <li><a href="#">导游</a></li>
+                <li><a href="/company">客户资源</a></li>
                 <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">报价<span class="caret"></span></a>
 
                     <ul class="dropdown-menu" role="menu">
