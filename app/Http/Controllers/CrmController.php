@@ -54,7 +54,7 @@ class CrmController extends Controller
      * Author:kevin_zkc@126.com
      * Date:2016-12-05
      * description:
-     *          请求： /getcompanycontact/id     这里cid是公司的主键
+     *          请求： /getcompanycontact/cid     这里cid是公司的主键
      *          如果有联系人返回：[{"id":主键,"cid":所属公司主键,"pname":"联系人名字","tel1":"电话1","tel2":"电话2","title":"职位","note":"备注"},{....},{....}]
      *          如果没有联系人返回：0
      */

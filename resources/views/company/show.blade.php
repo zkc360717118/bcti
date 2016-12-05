@@ -51,6 +51,7 @@
                         data-content="右侧的 Popover 中的一些内容">
                     查看
                 </button>
+                <input type="hidden" value="{{$d->cid}}">
             </td>
         </tr>
         @endforeach
