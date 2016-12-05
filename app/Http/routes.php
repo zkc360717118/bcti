@@ -58,6 +58,17 @@ Route::get('/guide','GuideController@show');
 Route::any('/guideadd','GuideController@add');
 Route::any('/guideEdit/{g?}','GuideController@edit');
 
+/*
+ * 客户资源类路由
+ */
+Route::get('/company','CrmController@show');
+Route::any('/companyadd','CrmController@add');
+Route::any('/companyEdit/{c?}','CrmController@edit');
+Route::get('/getcompanycontact/{cid}','CrmController@contactJson');
+
+/*
+ *
+ */
 
 
 

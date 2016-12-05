@@ -10,4 +10,5 @@ class Hotel extends Model
     protected  $primaryKey = 'hid';
     protected  $guarded = ['hid'];
 
+
 }
