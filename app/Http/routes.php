@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -22,6 +23,7 @@ Route::auth(); //php artisan make:atuh 自动生成,同时自动生成了homeCon
 登录路由
 */
 Route::get('/', 'HomeController@index'); //php artisan make:atuh 自动生成
+
 
 /*
  * 酒店类路由
@@ -67,6 +69,8 @@ Route::any('/companyEdit/{c?}','CrmController@edit');
 Route::get('/getcompanycontact/{cid}','CrmController@contactJson');
 
 /*
+ *报价类路由！！important!!
+ * 
  *
  */
 

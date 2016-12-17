@@ -13,7 +13,7 @@ class AddNoteToFood extends Migration
     public function up()
     {
         Schema::table('food', function (Blueprint $table) {
-            $table->text('note')h;
+            $table->text('note');
         });
     }
 

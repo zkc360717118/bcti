@@ -27,7 +27,7 @@
             for(var i=0; i<aEl.length; i++){
                 aEl[i].onmouseover=function(){
                         var oCId=$(this).next().next().val();
-                        var URL='http://zkc.com/getcompanycontact/'+oCId;
+                        var URL='/getcompanycontact/'+oCId;
                         $.get(URL,function(data){
                               if(data==0){
                                 $('.contacts').html('本公司还没有联系人哦！');

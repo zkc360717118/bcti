@@ -15,7 +15,7 @@ class TourController extends Controller
     public function addText(Request $re){
         if(empty($_POST)){
             //显示添加页面
-            return view('english.addtext');
+            return view('itinerary.addtext');
 
         }else{
             //接收post数据，增加行程
@@ -35,7 +35,7 @@ class TourController extends Controller
     public function itiPieces(){
         //查出所有碎片行程的信息
         $alltour = DB::table('itinerarys')->get();
-        return view('english.itinerarypieceshow',['alltour'=>$alltour]);
+        return view('itinerary.itinerarypieceshow',['alltour'=>$alltour]);
     }
 
     /*
@@ -44,7 +44,7 @@ class TourController extends Controller
     public function modifyIti(Itinerary $itid ,Request $req){
         if(empty($_POST)){
             //展示
-            return view('english.modifyiti',['p'=>$itid]);
+            return view('itinerary.modifyiti',['p'=>$itid]);
         }else{
             //修改
 //            $it = Itinerary::where('itid',$req->itid)->get();

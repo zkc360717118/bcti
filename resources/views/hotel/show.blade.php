@@ -11,8 +11,8 @@
 <script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <body>
+@include('common.header')
 <div class="container">
-    @include('common.header')
     <table class="table table-condensed">
         <thead>
         <tr>

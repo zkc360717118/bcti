@@ -37,7 +37,7 @@
     <div class="tab-pane fade " id="shanghai">
         {{--上海碎片化行程遍历  end--}}
         @foreach($alltour as $b)
-            @if($b->city=="北京")
+            @if($b->city=="上海")
                 <div class="jumbotron text-center">
                     <h1>{{$b->city}}</h1>
                     <h3>code:{{$b->code}}</h3>
