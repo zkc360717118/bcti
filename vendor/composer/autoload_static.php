@@ -265,15 +265,14 @@ class ComposerStaticInitbc95b19571731e6262955d364f4725c5
 
     public static $classMap = array (
         'AddColumnCityToItinerary' => __DIR__ . '/../..' . '/database/migrations/2016_11_14_011859_add_column_city_to_itinerary.php',
+        'AddForeignkeyToIndia' => __DIR__ . '/../..' . '/database/migrations/2016_12_18_094419_add_foreignkey_to_india.php',
         'AddNoteToFood' => __DIR__ . '/../..' . '/database/migrations/2016_11_26_142825_add_note_to_food.php',
         'AddPrimareykeToFood' => __DIR__ . '/../..' . '/database/migrations/2016_11_26_030022_add_primareyke_to_food.php',
         'AddPrimarykeyToMenu' => __DIR__ . '/../..' . '/database/migrations/2016_11_26_033052_add_primarykey_to_menu.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateTableComapny' => __DIR__ . '/../..' . '/database/migrations/2016_12_04_134418_create_table_comapny.php',
-        'CreateTableCompany' => __DIR__ . '/../..' . '/database/migrations/2016_12_04_131218_create_table_compan.php',
         'CreateTableFood' => __DIR__ . '/../..' . '/database/migrations/2016_11_25_090210_create_table_food.php',
         'CreateTableFoodmenu' => __DIR__ . '/../..' . '/database/migrations/2016_11_25_090540_create_table_foodmenu.php',
-        'CreateTableForeincontact' => __DIR__ . '/../..' . '/database/migrations/2016_12_04_131319_create-table-foreincontac.php',
         'CreateTableGuide' => __DIR__ . '/../..' . '/database/migrations/2016_11_28_143645_create_table_guide.php',
         'CreateTableHotels' => __DIR__ . '/../..' . '/database/migrations/2016_11_19_042111_create_table_hotels.php',
         'CreateTableIndia' => __DIR__ . '/../..' . '/database/migrations/2016_12_04_134452_create_table_india.php',

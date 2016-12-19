@@ -65,14 +65,24 @@ class CrmController extends Controller
 
 
     /*
-    餐厅修改和保存
+    客户信息的修改和保存
     */
     public function edit(Company $c,Request $r){
         if(empty($_POST)){
-            return view('company.edit',['data'=>$c]);
+            $a=$c->load('contacts');
+            return view('company.edit',['data'=>$a]);
         }else{
-            return $c->update($r->all())?redirect('/food') : "更改失败，联系程序猿吧";
+            return $c->update($r->all())?redirect('/company') : "更改失败，联系程序猿吧";
         }
 
     }
+
+    /*
+     * 客户信息的修改
+     */
+    public function contactEdit(India $c,Request $r){
+        $c->update($r->all());
+        return back();
+    }
+
 }

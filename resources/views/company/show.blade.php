@@ -54,6 +54,7 @@
 <body>
 @include('common.header')
 <div class="container">
+    <a href="/companyadd"  class="btn btn-danger">添加客户</a>
     <table class="table table-striped">
         <caption class="bg-info">展示公司</caption>
         <thead>
@@ -75,10 +76,9 @@
             <td>{{$d->landline}}</td>
             <td>{{$d->city}}</td>
             <td class="check">
-                <button type="button" class="btn btn-warning checkBtn" >查看</button>
-                <div class="contacts">
-
-                </div>
+                <a href="/companyEdit/{{$d->cid}}" class="btn btn-info" >修改</a>
+                <button type="link" class="btn btn-warning checkBtn" >查看</button>
+                <div class="contacts"></div>
                 <input type="hidden" value="{{$d->cid}}">
             </td>
         </tr>

@@ -11,7 +11,7 @@ class Company extends Model
     protected $guarded = ['resid'];
     public $timestamps=false;
 
-    public function contact(){
-        return $this->hasMany(India::class,'cid');
+    public function contacts(){
+        return $this->hasMany('App\India','cid','city');
     }
 }

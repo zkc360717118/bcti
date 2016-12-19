@@ -11,7 +11,8 @@ class India extends Model
     protected  $primaryKey = 'id';
     protected  $guarded = ['id'];
 
+
     public function company(){
-        return $this->belongsTo('App/Company');
+        return $this->belongsTo(Company::class);
     }
 }

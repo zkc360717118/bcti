@@ -11,11 +11,12 @@
 | and give it the controller to call when that URI is requested.
 |
 /*
- * tour
+ * 行程碎片
  */
 Route::any('/addtext','TourController@addText'); //行程添加页面展示和 行程添加处理
 Route::get('/itipieces','TourController@itiPieces'); //行程添加页面展示和 行程添加处理
 Route::any('/modifyiti/{itid?}','TourController@modifyIti'); //行程添加页面展示和 行程添加处理
+Route::get('/getpiece/{id}','TourController@pieceAjax');
 
 Route::auth(); //php artisan make:atuh 自动生成,同时自动生成了homeController
 
@@ -31,6 +32,7 @@ Route::get('/', 'HomeController@index'); //php artisan make:atuh 自动生成
 Route::get('/hotel', 'HotelController@show');
 Route::any('/hoteladd', 'HotelController@add');
 Route::any('/hotelEdit/{h?}', 'HotelController@edit');
+Route::get('gethotel/{id}','HotelController@hotelAjax');//ajax 获取酒店的信息
 
 /*
  * 餐厅类路由
@@ -66,6 +68,8 @@ Route::any('/guideEdit/{g?}','GuideController@edit');
 Route::get('/company','CrmController@show');
 Route::any('/companyadd','CrmController@add');
 Route::any('/companyEdit/{c?}','CrmController@edit');
+Route::post('/contactEdit/{c?}','CrmController@contactEdit');
+
 Route::get('/getcompanycontact/{cid}','CrmController@contactJson');
 
 /*

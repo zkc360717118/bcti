@@ -113,5 +113,24 @@ class HotelController extends Controller
 
     }
 
+    /*
+   * Author:kevin_zkc@126.com
+   * Date:2016-12-19
+   * description:
+   *          请求：/gethotel/id     这里id是行程碎片的主键
+   *          如果有行程返回：
+                                      {
+                                       "itid": 1,
+                                       "content": "On Arrival, meet local guide and transfer to hotel.",
+                                       "code": "daoda",
+                                       "uid": 1,
+                                       "city": ""
+                                       }
+   *          如果没有返回：0
+   */
+//    public function hotelAjax(Hotel $id){
+//        $data = $id->toArray();
+//        return empty($data)?'0':json_encode($data);
+//    }
 
 }

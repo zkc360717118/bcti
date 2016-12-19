@@ -7,15 +7,14 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddColumnCityToItinerary' => $baseDir . '/database/migrations/2016_11_14_011859_add_column_city_to_itinerary.php',
+    'AddForeignkeyToIndia' => $baseDir . '/database/migrations/2016_12_18_094419_add_foreignkey_to_india.php',
     'AddNoteToFood' => $baseDir . '/database/migrations/2016_11_26_142825_add_note_to_food.php',
     'AddPrimareykeToFood' => $baseDir . '/database/migrations/2016_11_26_030022_add_primareyke_to_food.php',
     'AddPrimarykeyToMenu' => $baseDir . '/database/migrations/2016_11_26_033052_add_primarykey_to_menu.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreateTableComapny' => $baseDir . '/database/migrations/2016_12_04_134418_create_table_comapny.php',
-    'CreateTableCompany' => $baseDir . '/database/migrations/2016_12_04_131218_create_table_compan.php',
     'CreateTableFood' => $baseDir . '/database/migrations/2016_11_25_090210_create_table_food.php',
     'CreateTableFoodmenu' => $baseDir . '/database/migrations/2016_11_25_090540_create_table_foodmenu.php',
-    'CreateTableForeincontact' => $baseDir . '/database/migrations/2016_12_04_131319_create-table-foreincontac.php',
     'CreateTableGuide' => $baseDir . '/database/migrations/2016_11_28_143645_create_table_guide.php',
     'CreateTableHotels' => $baseDir . '/database/migrations/2016_11_19_042111_create_table_hotels.php',
     'CreateTableIndia' => $baseDir . '/database/migrations/2016_12_04_134452_create_table_india.php',

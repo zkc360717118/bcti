@@ -66,62 +66,67 @@
 <body>
 <div class="container">
     <div class="panel panel-primary">
-        <div class="panel-heading bg-info"><h4>增加公司信息</h4></div>
+        <div class="panel-heading bg-info"><h4>修改公司信息</h4><a href="/company" class="btn btn-danger">回到客户资源页面</a></div>
         <div class="panel-body ">
             <form class="bs-example bs-example-form" role="form" action="" method="post">
                 <div class="container-vertical clearFix">
                     <div class="form-group clearFix">
                         <label class="col-md-2 ">公司名<span class="glyphicon glyphicon-home"></span>：</label>
                         <div class="col-md-5">
-                            <input type="text" name="name" class="form-control " required placeholder="请输入公司名" value=""/>
+                            <input type="text" name="cname" class="form-control " required placeholder="请输入公司名" value="{{$data->cname}}"/>
                         </div>
                     </div>
                     <div class="form-group clearFix">
                         <label class="col-md-2 ">地址
                             <span class="glyphicon glyphicon-screenshot"></span>：</label>
                         <div class="col-md-5">
-                            <input type="text" name="address" class="form-control " placeholder="请输入地址" value=""/>
+                            <input type="text" name="address" class="form-control " placeholder="请输入地址" value="{{$data->address}}"/>
                         </div>
                     </div>
                     <div class="form-group clearFix">
                         <label class="col-md-2 ">座机<span class="glyphicon glyphicon-phone"></span>：</label>
                         <div class="col-md-5">
-                            <input type="tel" name="tel" class="form-control" required placeholder="请输入公司座机" value=""/>
+                            <input type="tel" name="landline" class="form-control" required placeholder="请输入公司座机" value="{{$data->landline}}"/>
                         </div>
                     </div>
                     <div class="form-group clearFix">
                         <label class="col-md-2 ">城市<span class="glyphicon glyphicon-globe"></span>：</label>
                         <div class="col-md-5">
-                            <input type="text" name="city" class="form-control" required placeholder="请输入公司所在城市" value=""/>
+                            <input type="text" name="city" class="form-control" required placeholder="请输入公司所在城市" value="{{$data->city}}"/>
                         </div>
                     </div>
                     <hr class="mbm"/>
-
-                    <div class="form-group clearFix contact" id="contact">
-                        <p class="col-md-12 bg-info">该公司联系人：</p>
-                        <label class="col-md-2 ">人名：</label>
-                        <div class="col-md-4">
-                            <input type="text" name="cName" class="form-control " placeholder="请输入联系人的姓名" value=""/>
-                        </div>
-                        <label class="col-md-2 " >电话：</label>
-                        <div class="col-md-4">
-                            <input type="text" name="cTel" class="form-control " placeholder="请输入联系人的电话" value=""/>
-                        </div>
-                        <label class="col-md-2 ">职位：</label>
-                        <div class="col-md-4">
-                            <input type="text" name="position" class="form-control " placeholder="请输入联系人的职位" value=""/>
-                        </div>
-                        <label class="col-md-2 ">备注：</label>
-                        <div class="col-md-4">
-                            <textarea></textarea>
-                        </div>
-                        <button type="button" class="btn btn-primary pull-right removeC"><span class="glyphicon glyphicon-minus"></span></button>
-                    </div>
-
-                    <button type="button" class="btn btn-primary pull-right addC"><span class="glyphicon glyphicon-plus"></span></button>
                 </div>
-                <button type="submit" class="btn btn-primary col-md-4 col-md-push-4"><strong>提交 </strong><i id="count"> (共有0个联系人)</i></button>
+                <button type="submit" class="btn btn-primary col-md-4 col-md-push-4"><strong>修改公司 </strong></button>
             </form>
+
+            {{--联系人修改表单--}}
+
+                @foreach($data->contacts as $c)
+                <form action="/contactEdit/{{$c->id}}" method="post" class="form-horizontal"  >
+                    {{csrf_field()}}
+                <div class="form-group clearFix contact" >
+                    <p class="col-md-12 bg-info">该公司联系人：</p>
+                    <label class="col-md-2 ">人名：</label>
+                    <div class="col-md-4">
+                        <input type="text" name="pname" class="form-control " placeholder="请输入联系人的姓名" value="{{$c->pname}}"/>
+                    </div>
+                    <label class="col-md-2 " >电话：</label>
+                    <div class="col-md-4">
+                        <input type="text" name="tel1" class="form-control " placeholder="请输入联系人的电话" value="{{$c->tel1}}"/>
+                    </div>
+                    <label class="col-md-2 ">职位：</label>
+                    <div class="col-md-4">
+                        <input type="text" name="title" class="form-control " placeholder="请输入联系人的职位" value="{{$c->title}}"/>
+                    </div>
+                    <label class="col-md-2 ">备注：</label>
+                    <div class="col-md-4">
+                        <textarea class="form-control" name="note">{{$c->note}}</textarea>
+                    </div>
+                </div>
+                    <button type="submit" class="btn btn-primary col-md-4 col-md-push-4"><strong>修改联系人 </strong></button>
+                </form>
+            @endforeach
         </div>
     </div>
 </div>
