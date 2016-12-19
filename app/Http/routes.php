@@ -16,7 +16,7 @@
 Route::any('/addtext','TourController@addText'); //行程添加页面展示和 行程添加处理
 Route::get('/itipieces','TourController@itiPieces'); //行程添加页面展示和 行程添加处理
 Route::any('/modifyiti/{itid?}','TourController@modifyIti'); //行程添加页面展示和 行程添加处理
-Route::get('/getpiece/{id}','TourController@pieceAjax');
+Route::get('/getpiece/{code}','TourController@pieceAjax');
 
 Route::auth(); //php artisan make:atuh 自动生成,同时自动生成了homeController
 

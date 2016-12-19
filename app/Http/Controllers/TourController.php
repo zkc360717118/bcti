@@ -62,7 +62,7 @@ class TourController extends Controller
     * Author:kevin_zkc@126.com
     * Date:2016-12-19
     * description:
-    *          请求：/getpiece/id     这里id是行程碎片的主键
+    *          请求：/getpiece/code  这里code是行程碎片的代码
     *          如果有行程返回：
                                        {
                                         "itid": 1,
@@ -74,8 +74,9 @@ class TourController extends Controller
     *          如果没有返回：0
     */
 
-    public function pieceAjax(Itinerary $id){
-        $data = $id->toArray();
+    public function pieceAjax($code){
+        $data = Itinerary::where('code',$code)->first()->toArray();
+
         return empty($data)?'0':json_encode($data);
     }
 
