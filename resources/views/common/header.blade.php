@@ -24,10 +24,10 @@
                 <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">报价<span class="caret"></span></a>
 
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/itipieces">行程碎片</a>
+                        <li><a href="/itipieces">行程碎er片</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#">英文报价</a>
+                        <li><a href="/maketour">英文报价</a>
                         </li>
                     </ul>
                 </li>

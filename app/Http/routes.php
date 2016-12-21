@@ -74,9 +74,11 @@ Route::get('/getcompanycontact/{cid}','CrmController@contactJson');
 
 /*
  *报价类路由！！important!!
- * 
- *
  */
+Route::any('/maketour','QuoteController@maketour');
+
+
+
 
 
 

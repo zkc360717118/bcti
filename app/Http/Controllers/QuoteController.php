@@ -8,5 +8,7 @@ use App\Http\Requests;
 
 class QuoteController extends Controller
 {
-
+    public function maketour(){
+        return view('quote.maketour');
+    }
 }
