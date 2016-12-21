@@ -10,7 +10,7 @@
             list-style: none;
         }
         .container input{ padding-left:6px;}
-        .container label{ margin-top:5px; }
+        .container label{ margin-top:7px; }
         textarea{ resize: none;}
         .container button{ margin-top:10px; margin-right:8px; }
          body{ background: #000; height:100%;}
@@ -19,6 +19,7 @@
         .left .container{ width:450px; }
         .right{ width:700px; background: #ccc; position:absolute; top:10px; left:500px; border-radius: 10px;  clear:both;}
         .right .container{width:700px; }
+       .right .hotel div{ padding:1px; padding-right:2px;}
         .right button{ margin-left:38%;}
         .right .panel{ width:100%; overflow:hidden; font-size:12px; padding-bottom:10px; margin-bottom: 0;}
         .right tr input{ width:80px;}
@@ -36,7 +37,7 @@
             var oH=document.body.style.height;
             $('#bg').css('height',oH);
 
-            //增加行程,numDay为天数
+            //点击增加行程,numDay为天数
             $('.addDay').click(function(){
                 numDay++;
                 document.title=numDay;
@@ -46,7 +47,7 @@
                 oDay.insertBefore($('.deleteDay'));
             });
 
-            //减少行程,numDay为天数
+            //点击减少行程,numDay为天数
             $('.deleteDay').click(function(){
                 if(numDay==1){
                     alert('最后一天！');
@@ -58,14 +59,27 @@
                 aDay.eq(aDay.length-1).remove();
             });
 
-            //增加酒店
+            //点击增加酒店个数
             $('.addHotel').click(function(){
-                document.title=numDay;
-                var oDay=$('#day').clone(true);
-                oDay.children('label').html('第'+arr[numDay-1]+'天');
-                oDay.insertBefore($('.deleteDay'));
+                var n=$('#hotel1').children().length;
+                if(n>=3 && n<4){
+                    $('.hotel').append('<div class="col-md-3">' +
+                            '<input type="text" class="form-control" placeholder="酒店3" name=""/>' +
+                            '</div>')
+                }else{
+                    alert('酒店最少两个最多三个！')
+                }
             });
 
+            //点击删除酒店个数
+            $('.dltHotel').click(function(){
+               var n=$('#hotel1').children().length;
+                if(n==4){
+                    $('.hotel div:last-child').remove();
+                }else{
+                    alert('酒店最少两个最多三个！')
+                }
+            });
         })
     </script>
 </head>
@@ -100,7 +114,7 @@
         <hr class="mbm"/>
         <h4 class="bg-info">酒店</h4>
         <div class="container">
-            <div class="col-md-12">
+            <div class="col-md-12 hotel" id="hotel1">
                 <label class="col-md-3">北京酒店:</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="酒店1" name=""/>
@@ -109,7 +123,7 @@
                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 hotel">
                 <label class="col-md-3">上海酒店:</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="酒店1" name=""/>
@@ -176,22 +190,40 @@
                         </div>
                         <h5 class="bg-info">酒店</h5>
                         <div class="container">
-                            <div class="col-md-12">
-                                <label class="col-md-2">三星酒店:</label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="hotel1" />
+                            <div class="col-md-12 ">
+                                <label class="col-md-2"></label>
+                                <div class="col-md-3">
+                                    三星级
                                 </div>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="hotel2" />
+                                <div class="col-md-3">
+                                    四星级
+                                </div>
+                                <div class="col-md-3">
+                                   五星级
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <label class="col-md-2">四星酒店:</label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="hotel1" />
+                            <div class="col-md-12 hotel">
+                                <label class="col-md-2">北京:</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店1" name=""/>
                                 </div>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="hotel2" />
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店2" name=""/>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店3" name=""/>
+                                </div>
+                            </div>
+                            <div class="col-md-12 hotel">
+                                <label class="col-md-2">上海:</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店1" name=""/>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店2" name=""/>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="酒店3" name=""/>
                                 </div>
                             </div>
                         </div>
