@@ -45,11 +45,12 @@
                 oDay.find('input').val('');
                 oDay.insertBefore($('.deleteDay'));
 
-                //报价单跟着numDay增加天数
-                var oqDay=$('#qDay').clone(true);
-                oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
-                oqDay.find('input').val('');
-                $('tbody').append(oqDay);
+                 //报价单跟着numDay增加天数
+               var oqDay=$('#qDay').clone(true);
+               oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
+               oqDay.children().eq(1).attr('name','date'+numDay);
+               oqDay.find('input').val('');
+               $('tbody').append(oqDay);
             });
 
             //点击减少行程,numDay为天数
