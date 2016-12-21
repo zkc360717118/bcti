@@ -90,7 +90,42 @@
                 }
             });
 
-            //日期
+            //获取第一天的日期
+            $('input[name=firstDay]').change(function(){
+                var m=new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Spt","Oct","Nov","Dec");
+                var d=new Array("st","nd","rd","th");
+                //20161010
+                 var firstDay=$('input[name=firstDay]').val();
+                //前四位为年
+
+                 var year=firstDay.substring(0,4);  //2016
+                 var month=firstDay.substring(4,6);  //12
+                 var date=firstDay.substring(6,8);   //23
+                 var dns;
+                    if(((date)<1) ||((date)>3)){
+                        dns=d[3];
+                    }
+                    else
+                    {
+                        dns=d[(date)-1];
+                        if((date==11)||(date==12)){
+                            dns=d[3];
+                        }
+                    }
+                 var dateEnglish=date+dns+' '+m[month-1]+','+year;
+                $('input[name=date1]').val(dateEnglish);
+            });
+
+            //调用行程码
+            $('input[name=tourCode]').change(function(){
+                var tourCode=$('input[name=tourCode]').val();
+                $.post('/getpiece/',{code:tourCode},function(data){
+                    var json=eval('('+data+')');
+                    console.log(json);
+
+                })
+
+            });
         })
     </script>
 </head>
@@ -104,7 +139,7 @@
             <div class="col-md-12">
                     <label class="col-md-3">时间：</label>
                     <div class="col-md-9">
-                      <input type="text" class="date form-control" name="" placeholder="团到中国的日期" />
+                      <input type="text" class="date form-control" name="firstDay" placeholder="团到中国的日期如20161010" />
                    </div>
             </div>
             <div class="col-md-12 day" id="day">
@@ -116,7 +151,7 @@
                     <input type="text" class="form-control" placeholder="餐标" name=""/>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="行程码" name=""/>
+                    <input type="text" class="form-control" placeholder="行程码" name="tourCode"/>
                 </div>
             </div>
             <button class="btn btn-primary btn-xs pull-right deleteDay">删除行程</button>
@@ -177,7 +212,7 @@
                                 <tbody>
                                     <tr class="qDay" id="qDay">
                                         <td>第一天</td>
-                                        <td><input type="text" name="date" placeholder="请输入行程日期"/></td>
+                                        <td><input type="text" name="date1" placeholder="请输入行程日期"/></td>
                                         <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
                                         <td><input type="text" name="meal" placeholder="餐标"/></td>
                                         <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
@@ -207,6 +242,7 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                                 </div>
+
                             </div>
                             <div class="col-md-12 hotel">
                                 <label class="col-md-2">上海:</label>
@@ -216,6 +252,7 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                                 </div>
+
                             </div>
                         </div>
                         <div>
