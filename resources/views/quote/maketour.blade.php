@@ -17,11 +17,11 @@
         #bg{ width:100%;  font-size:12px; background: #000; opacity:0.3;  filter:alpha(opacity=30);}
         .left{ width:450px; font-size:12px;  background: #ccc; position:absolute; top:50px; left:20px; padding-bottom:10px; border-radius: 10px; clear:both;}
         .left .container{ width:450px; }
-        .right{ width:700px; background: #ccc; position:absolute; top:10px; left:500px; border-radius: 10px;  clear:both;}
+        .right{ width:800px; background: #ccc; position:absolute; top:10px; left:500px; border-radius: 10px;  clear:both;}
         .right .container{width:700px; }
        .right .hotel div{ padding:1px; padding-right:2px;}
         .right button{ margin-left:38%;}
-        .right .panel{ width:100%; overflow:hidden; font-size:12px; padding-bottom:10px; margin-bottom: 0;}
+        .right .panel{ width:100%; overflow:hidden; font-size:12px; padding-bottom:24px; margin-bottom: 0;}
         .right tr input{ width:80px;}
     </style>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
@@ -40,11 +40,16 @@
             //点击增加行程,numDay为天数
             $('.addDay').click(function(){
                 numDay++;
-                document.title=numDay;
                 var oDay=$('#day').clone(true);
                 oDay.children('label').html('第'+arr[numDay-1]+'天');
                 oDay.find('input').val('');
                 oDay.insertBefore($('.deleteDay'));
+
+                //报价单跟着numDay增加天数
+                var oqDay=$('#qDay').clone(true);
+                oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
+                oqDay.find('input').val('');
+                $('tbody').append(oqDay);
             });
 
             //点击减少行程,numDay为天数
@@ -57,6 +62,10 @@
                 document.title=numDay;
                 var aDay=$('.day');
                 aDay.eq(aDay.length-1).remove();
+
+                //报价单跟着numDay较少天数
+                $('tbody tr:last-child').remove();
+
             });
 
             //点击增加酒店个数
@@ -80,6 +89,8 @@
                     alert('酒店最少两个最多三个！')
                 }
             });
+
+            //日期
         })
     </script>
 </head>
@@ -158,33 +169,19 @@
                                 <tr>
                                     <th>第几天</th>
                                     <th>日期</th>
-                                    <th>餐标</th>
                                     <th>地点</th>
+                                    <th>餐标</th>
                                     <th>行程</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>第一天</td>
-                                    <td><input type="text" name="date" placeholder="请输入行程日期"/></td>
-                                    <td><input type="text" name="meal" placeholder="餐标"/></td>
-                                    <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
-                                    <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
-                                </tr>
-                                <tr>
-                                    <td>第二天</td>
-                                    <td><input type="text" name="date" placeholder="请输入行程日期"/></td>
-                                    <td><input type="text" name="meal" placeholder="餐标"/></td>
-                                    <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
-                                    <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
-                                </tr>
-                                <tr>
-                                    <td>第三天</td>
-                                    <td><input type="text" name="date" placeholder="请输入行程日期"/></td>
-                                    <td><input type="text" name="meal" placeholder="餐标"/></td>
-                                    <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
-                                    <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
-                                </tr>
+                                    <tr class="qDay" id="qDay">
+                                        <td>第一天</td>
+                                        <td><input type="text" name="date" placeholder="请输入行程日期"/></td>
+                                        <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
+                                        <td><input type="text" name="meal" placeholder="餐标"/></td>
+                                        <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -210,9 +207,6 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" placeholder="酒店3" name=""/>
-                                </div>
                             </div>
                             <div class="col-md-12 hotel">
                                 <label class="col-md-2">上海:</label>
@@ -222,16 +216,13 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" placeholder="酒店3" name=""/>
-                                </div>
                             </div>
                         </div>
                         <div>
                             <h5 class="bg-info">注意事项</h5>
                         </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-xs col-md-3">提交</button>
+                <button type="submit" class="btn btn-primary btn-sm col-md-3">提交</button>
             </div>
         </form>
     </div>
