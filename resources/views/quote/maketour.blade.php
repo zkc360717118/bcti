@@ -40,7 +40,7 @@
             //点击增加行程,numDay为天数
             $('.addDay').click(function(){
                 numDay++;
-                var oDay=$('#day').clone(true);
+                var oDay=$('.day').eq(0).clone(true);
                 oDay.children('label').html('第'+arr[numDay-1]+'天');
                 oDay.children().eq(1).children().eq(0).attr('name','address'+numDay);
                 oDay.children().eq(2).children().eq(0).attr('name','meal'+numDay);
@@ -49,14 +49,7 @@
                 oDay.insertBefore($('.deleteDay'));
 
                //报价单跟着numDay增加天数
-                var oqDay=$('#qDay').clone(true);
-                oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
-                oqDay.children().eq(1).children().eq(0).attr('name','date'+numDay);
-                oqDay.children().eq(2).children().eq(0).attr('name','address'+numDay);
-                oqDay.children().eq(3).children().eq(0).attr('name','meal'+numDay);
-                oqDay.children().eq(4).children().eq(0).attr('name','tourCode'+numDay);
-                oqDay.find('input,textarea').val('');
-                $('tbody').append(oqDay);
+                $('tbody').append('<tr class="qDay"><td>第'+arr[numDay-1]+'天</td><td><input type="text" name="date'+numDay+'" placeholder="请输入行程日期"/></td><td><input type="text" name="address'+numDay+'" placeholder="请输入行程的地点"/></td><td><input type="text" name="meal'+numDay+'" placeholder="餐标"/></td><td><textarea name="tourCode'+numDay+'"  cols="35" rows="2"></textarea></td></tr>');
             });
 
             //点击减少行程,numDay为天数
@@ -137,18 +130,23 @@
                     })
                 }*/
 
-                $('.day').on('change','input',function(){
+                 //调用行程码
+                $('.day').on('change','textarea',function(){
                          var name=$(this).attr('name');
                          var tourCode=$(this).val();
                         $.get('/getpiece/'+tourCode,function(data){
-                              alert(1);
                               var json=eval('('+data+')');
-                              console.log(json);
-                              console.log($('textarea[name='+name+']'));
-                              $('textarea[name='+name+']').html(json.content);
+                              $('.right textarea[name='+name+']').html(json.content);
                         })
-
                   })
+                //地点，餐标
+                   $('.day').on('change','input',function(){
+                           var name=$(this).attr('name');
+                           var content=$(this).val();
+                         $('.right input[name='+name+']').val(content);
+                    })
+
+                //根据地点增加酒店
         })
     </script>
 </head>
@@ -165,7 +163,7 @@
                       <input type="text" class="date form-control" name="firstDay" placeholder="团到中国的日期如20161010" />
                    </div>
             </div>
-            <div class="col-md-12 day" id="day">
+            <div class="col-md-12 day">
                 <label class="col-md-3">第一天:</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="地点" name="address1"/>
@@ -174,7 +172,7 @@
                     <input type="text" class="form-control" placeholder="餐标" name="meal1"/>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="行程码" name="tourCode1"/>
+                    <textarea class="form-control tourCode" placeholder="行程" name="tourCode1" ></textarea>
                 </div>
             </div>
             <button class="btn btn-primary btn-xs pull-right deleteDay">删除行程</button>
@@ -233,7 +231,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="qDay" id="qDay">
+                                    <tr class="qDay">
                                         <td>第一天</td>
                                         <td><input type="text" name="date1" placeholder="请输入行程日期"/></td>
                                         <td><input type="text" name="address1" placeholder="请输入行程的地点"/></td>
