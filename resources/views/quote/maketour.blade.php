@@ -45,11 +45,23 @@
                 oDay.children().eq(1).children().eq(0).attr('name','address'+numDay);
                 oDay.children().eq(2).children().eq(0).attr('name','meal'+numDay);
                 oDay.children().eq(3).children().eq(0).attr('name','tourCode'+numDay);
-                oDay.find('input').val('');
+              oDay.find('input').val('');
                 oDay.insertBefore($('.deleteDay'));
 
                //报价单跟着numDay增加天数
-                $('tbody').append('<tr class="qDay"><td>第'+arr[numDay-1]+'天</td><td><input type="text" name="date'+numDay+'" placeholder="请输入行程日期"/></td><td><input type="text" name="address'+numDay+'" placeholder="请输入行程的地点"/></td><td><input type="text" name="meal'+numDay+'" placeholder="餐标"/></td><td><textarea name="tourCode'+numDay+'"  cols="35" rows="2"></textarea></td></tr>');
+               var oqDay=$('.qDay').eq(0).clone(true);
+               oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
+               oqDay.children().eq(1).children().eq(0).attr('name','date'+numDay);
+               oqDay.children().eq(2).children().eq(0).attr('name','address'+numDay);
+               oqDay.children().eq(3).children().eq(0).attr('name','meal'+numDay);
+               oqDay.children().eq(4).children().eq(0).attr('name','tourCode'+numDay);
+               oqDay.find('input').val('');
+               oqDay.find('textarea').html('');
+               $('tbody').append(oqDay);
+
+               /* $('tbody').append('<tr class="qDay"><td>第'+arr[numDay-1]+'天</td><td><input type="text" name="date'+numDay+'" placeholder="请输入行程日期"/></td><td><input type="text" class="qaddress" name="address'+numDay+'" placeholder="请输入行程的地点"/></td><td><input type="text" name="meal'+numDay+'" placeholder="餐标"/></td><td><textarea name="tourCode'+numDay+'"  cols="35" rows="2"></textarea></td></tr>');*/
+
+
             });
 
             //点击减少行程,numDay为天数
@@ -116,19 +128,6 @@
                 $('input[name=date1]').val(dateEnglish);
             });
 
-               /*  //调用行程码
-                $('input[name=tourCode1]').change(function(){
-                     var tourCode=$(this).val();
-
-                      code2content(tourCode);
-                });
-
-                function code2content(n){
-                   $.get('/getpiece/'+n,function(data){
-                         var json=eval('('+data+')');
-                        $('textarea[name=qtourCode1]').html(json.content);
-                    })
-                }*/
 
                  //调用行程码
                 $('.day').on('change','textarea',function(){
@@ -139,14 +138,46 @@
                               $('.right textarea[name='+name+']').html(json.content);
                         })
                   })
+
                 //地点，餐标
                    $('.day').on('change','input',function(){
                            var name=$(this).attr('name');
                            var content=$(this).val();
+                            console.log(content);
                          $('.right input[name='+name+']').val(content);
                     })
 
+                var addressArry=[];
                 //根据地点增加酒店
+                $('.qaddress').on('change',function(){
+                alert(1);
+                      findAddress();
+                      alert(addressArry);
+                });
+                function findAddress(){
+                        //循环所有的地址
+                        var value='';
+                        for(var i=0; i<$('.qaddress').length; i++){
+                           value=$('.qaddress').eq(i).val()
+                            if(value){
+                            //console.log(findInArr(value,addressArry));
+                                if(findInArr(value,addressArry)==false){
+                                        addressArry.push(value)
+                                }
+                            }
+                        }
+                }
+
+                function findInArr(n,arr){
+                    for(var i=0; i<arr.length; i++){
+                        if(n==arr[i]){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+
         })
     </script>
 </head>
@@ -190,15 +221,7 @@
                     <input type="text" class="form-control" placeholder="酒店2" name=""/>
                 </div>
             </div>
-            <div class="col-md-12 hotel">
-                <label class="col-md-3">上海酒店:</label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="酒店1" name=""/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="酒店2" name=""/>
-                </div>
-            </div>
+
             <button class="btn btn-primary btn-xs pull-right dltHotel">删除酒店</button>
             <button class="btn btn-primary btn-xs pull-right addHotel">增加酒店</button>
         </div>
@@ -234,7 +257,7 @@
                                     <tr class="qDay">
                                         <td>第一天</td>
                                         <td><input type="text" name="date1" placeholder="请输入行程日期"/></td>
-                                        <td><input type="text" name="address1" placeholder="请输入行程的地点"/></td>
+                                        <td><input type="text" name="address1 " placeholder="请输入行程的地点"/></td>
                                         <td><input type="text" name="meal1" placeholder="餐标"/></td>
                                         <td><textarea name="tourCode1"  cols="35" rows="2"></textarea></td>
                                     </tr>
@@ -265,16 +288,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12 hotel">
-                                <label class="col-md-2">上海:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" placeholder="酒店1" name=""/>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" placeholder="酒店2" name=""/>
-                                </div>
 
-                            </div>
                         </div>
                         <div>
                             <h5 class="bg-info">注意事项</h5>
