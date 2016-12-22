@@ -26,6 +26,9 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/itipieces">行程碎er片</a>
                         </li>
+                        <li><a href="/addtext">添加行程碎er片</a>
+                        </li>
+
                         <li class="divider"></li>
                         <li><a href="/maketour">英文报价</a>
                         </li>

@@ -42,15 +42,21 @@
                 numDay++;
                 var oDay=$('#day').clone(true);
                 oDay.children('label').html('第'+arr[numDay-1]+'天');
+                oDay.children().eq(1).children().eq(0).attr('name','address'+numDay);
+                oDay.children().eq(2).children().eq(0).attr('name','meal'+numDay);
+                oDay.children().eq(3).children().eq(0).attr('name','tourCode'+numDay);
                 oDay.find('input').val('');
                 oDay.insertBefore($('.deleteDay'));
 
-                 //报价单跟着numDay增加天数
-               var oqDay=$('#qDay').clone(true);
-               oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
-               oqDay.children().eq(1).attr('name','date'+numDay);
-               oqDay.find('input').val('');
-               $('tbody').append(oqDay);
+               //报价单跟着numDay增加天数
+                var oqDay=$('#qDay').clone(true);
+                oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
+                oqDay.children().eq(1).children().eq(0).attr('name','date'+numDay);
+                oqDay.children().eq(2).children().eq(0).attr('name','address'+numDay);
+                oqDay.children().eq(3).children().eq(0).attr('name','meal'+numDay);
+                oqDay.children().eq(4).children().eq(0).attr('name','tourCode'+numDay);
+                oqDay.find('input,textarea').val('');
+                $('tbody').append(oqDay);
             });
 
             //点击减少行程,numDay为天数
@@ -117,16 +123,32 @@
                 $('input[name=date1]').val(dateEnglish);
             });
 
-            //调用行程码
-            $('input[name=tourCode]').change(function(){
-                var tourCode=$('input[name=tourCode]').val();
-                $.post('/getpiece/',{code:tourCode},function(data){
-                    var json=eval('('+data+')');
-                    console.log(json);
+               /*  //调用行程码
+                $('input[name=tourCode1]').change(function(){
+                     var tourCode=$(this).val();
 
-                })
+                      code2content(tourCode);
+                });
 
-            });
+                function code2content(n){
+                   $.get('/getpiece/'+n,function(data){
+                         var json=eval('('+data+')');
+                        $('textarea[name=qtourCode1]').html(json.content);
+                    })
+                }*/
+
+                $('.day').on('change','input',function(){
+                         var name=$(this).attr('name');
+                         var tourCode=$(this).val();
+                        $.get('/getpiece/'+tourCode,function(data){
+                              alert(1);
+                              var json=eval('('+data+')');
+                              console.log(json);
+                              console.log($('textarea[name='+name+']'));
+                              $('textarea[name='+name+']').html(json.content);
+                        })
+
+                  })
         })
     </script>
 </head>
@@ -146,13 +168,13 @@
             <div class="col-md-12 day" id="day">
                 <label class="col-md-3">第一天:</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="地点" name=""/>
+                    <input type="text" class="form-control" placeholder="地点" name="address1"/>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="餐标" name=""/>
+                    <input type="text" class="form-control" placeholder="餐标" name="meal1"/>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="行程码" name="tourCode"/>
+                    <input type="text" class="form-control" placeholder="行程码" name="tourCode1"/>
                 </div>
             </div>
             <button class="btn btn-primary btn-xs pull-right deleteDay">删除行程</button>
@@ -214,9 +236,9 @@
                                     <tr class="qDay" id="qDay">
                                         <td>第一天</td>
                                         <td><input type="text" name="date1" placeholder="请输入行程日期"/></td>
-                                        <td><input type="text" name="address" placeholder="请输入行程的地点"/></td>
-                                        <td><input type="text" name="meal" placeholder="餐标"/></td>
-                                        <td><textarea name="tour"  cols="35" rows="2"></textarea></td>
+                                        <td><input type="text" name="address1" placeholder="请输入行程的地点"/></td>
+                                        <td><input type="text" name="meal1" placeholder="餐标"/></td>
+                                        <td><textarea name="tourCode1"  cols="35" rows="2"></textarea></td>
                                     </tr>
                                 </tbody>
                             </table>
