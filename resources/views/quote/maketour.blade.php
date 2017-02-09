@@ -44,17 +44,17 @@
                 oDay.children('label').html('第'+arr[numDay-1]+'天');
                 oDay.children().eq(1).children().eq(0).attr('name','address'+numDay);
                 oDay.children().eq(2).children().eq(0).attr('name','meal'+numDay);
-                oDay.children().eq(3).children().eq(0).attr('name','tourCode'+numDay);
+                oDay.children().eq(3).children().eq(0).attr('name','iti'+numDay);
               oDay.find('input').val('');
                 oDay.insertBefore($('.deleteDay'));
 
                //报价单跟着numDay增加天数
                var oqDay=$('.qDay').eq(0).clone(true);
                oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
-               oqDay.children().eq(1).children().eq(0).attr('name','date'+numDay);
-               oqDay.children().eq(2).children().eq(0).attr('name','address'+numDay);
-               oqDay.children().eq(3).children().eq(0).attr('name','meal'+numDay);
-               oqDay.children().eq(4).children().eq(0).attr('name','tourCode'+numDay);
+               oqDay.children().eq(1).children().eq(0).attr('name','date[]');
+               oqDay.children().eq(2).children().eq(0).attr('name','address[]');
+               oqDay.children().eq(3).children().eq(0).attr('name','meal[]');
+               oqDay.children().eq(4).children().eq(0).attr('name','iti[]');
                oqDay.find('input').val('');
                oqDay.find('textarea').html('');
                $('tbody').append(oqDay);
@@ -131,20 +131,36 @@
 
                  //调用行程码
                 $('.day').on('change','textarea',function(){
-                         var name=$(this).attr('name');
-                         var tourCode=$(this).val();
+                        var rawdata=$(this).attr('name');
+
+                    var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
+                        var name = rawdata.replace(/[0-9]/ig,"");
+                        var tourCode=$(this).val();
+
                         $.get('/getpiece/'+tourCode,function(data){
                               var json=eval('('+data+')');
-                              $('.right textarea[name='+name+']').html(json.content);
+                            $('.right textarea[name^='+name+']').eq(anchor).html(json.content);
                         })
                   })
 
                 //地点，餐标
                    $('.day').on('change','input',function(){
-                           var name=$(this).attr('name');
-                           var content=$(this).val();
-                            console.log(content);
-                         $('.right input[name='+name+']').val(content);
+                           var rawdata=$(this).attr('name');
+                            var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
+                            var name = rawdata.replace(/[0-9]/ig,"");
+                            if(name=="address"){
+                                //用ajax调用对应数据库，找到对应的地点
+                                var code = $(this).val();
+                                var url = "/getpiece/"+code;
+                                $.get(url,function(e){
+                                    var json = $.parseJSON(e);
+                                     var content = json.content;
+                                    $('.right input[name^='+name+']').eq(anchor).val(content);
+                                });
+                            }else{
+                                 var content=$(this).val();
+                                $('.right input[name^='+name+']').eq(anchor).val(content);
+                            }
                     })
 
                 var addressArry=[];
@@ -203,7 +219,7 @@
                     <input type="text" class="form-control" placeholder="餐标" name="meal1"/>
                 </div>
                 <div class="col-md-3">
-                    <textarea class="form-control tourCode" placeholder="行程" name="tourCode1" ></textarea>
+                    <textarea class="form-control tourCode" placeholder="行程" name="iti1" ></textarea>
                 </div>
             </div>
             <button class="btn btn-primary btn-xs pull-right deleteDay">删除行程</button>
@@ -254,12 +270,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    {{--<tr class="qDay">--}}
+                                        {{--<td>第一天</td>--}}
+                                        {{--<td><input type="text" name="date1[]" placeholder="请输入行程日期"/></td>--}}
+                                        {{--<td><input type="text" name="address1[]" placeholder="请输入行程的地点"/></td>--}}
+                                        {{--<td><input type="text" name="meal1[]" placeholder="餐标"/></td>--}}
+                                        {{--<td><textarea name="tourCode1[]"  cols="35" rows="2"></textarea></td>--}}
+                                    {{--</tr>--}}
                                     <tr class="qDay">
                                         <td>第一天</td>
-                                        <td><input type="text" name="date1" placeholder="请输入行程日期"/></td>
-                                        <td><input type="text" name="address1 " placeholder="请输入行程的地点"/></td>
-                                        <td><input type="text" name="meal1" placeholder="餐标"/></td>
-                                        <td><textarea name="tourCode1"  cols="35" rows="2"></textarea></td>
+                                        <td><input type="text" name="date[]" placeholder="请输入行程日期" /></td>
+                                        <td><input type="text" name="address[]" placeholder="请输入行程的地点"/></td>
+                                        <td><input type="text" name="meal[]" placeholder="餐标" /></td>
+                                        <td><textarea name="iti[]"  cols="35" rows="2"></textarea></td>
                                     </tr>
                                 </tbody>
                             </table>

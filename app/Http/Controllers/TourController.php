@@ -75,11 +75,13 @@ class TourController extends Controller
     */
 
     public function pieceAjax($code){
-        $data = Itinerary::where('code',$code)->first()->toArray();
-
-        return empty($data)?'0':json_encode($data);
+        $data = Itinerary::where('code',$code)->first();
+        if(!$data){
+            return 0;
+        }else{
+            return json_encode($data=$data->toArray());
+        }
     }
-
 
 
 }

@@ -101,7 +101,6 @@
             </form>
 
             {{--联系人修改表单--}}
-
                 @foreach($data->contacts as $c)
                 <form action="/contactEdit/{{$c->id}}" method="post" class="form-horizontal"  >
                     {{csrf_field()}}
