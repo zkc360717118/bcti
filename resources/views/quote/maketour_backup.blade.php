@@ -257,9 +257,9 @@
                                 <tbody>
                                     <tr class="qDay">
                                         <td>第一天</td>
-                                        <td><input type="text" name="date1[]" placeholder="请输入行程日期"/></td>
-                                        <td><input type="text" name="address1[]" placeholder="请输入行程的地点"/></td>
-                                        <td><input type="text" name="meal1[]" placeholder="餐标"/></td>
+                                        <td><input type="text" class="date1" name="date1[]" placeholder="请输入行程日期"/></td>
+                                        <td><input type="text" class="qaddress" name="address1[]" placeholder="请输入行程的地点"/></td>
+                                        <td><input type="text" class="meal1" name="meal1[]" placeholder="餐标"/></td>
                                         <td><textarea name="tourCode1[]"  cols="35" rows="2"></textarea></td>
                                     </tr>
                                 </tbody>
