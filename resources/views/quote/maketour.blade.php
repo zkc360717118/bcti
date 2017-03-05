@@ -38,6 +38,14 @@
             var oH=document.body.style.height;
             $('#bg').css('height',oH);
 
+            //封装一个方法，供下面左下角酒店生成调用
+            function findHotel(para){
+                for(var i=0; i<addressArry.length; i++){
+                    if(para==addressArry[i]){
+                        return  i;
+                    }
+                }
+            }
             //点击增加行程,numDay为天数
             $('.addDay').click(function(){
                 numDay++;
@@ -127,7 +135,7 @@
                     }
                 }
                 var dateEnglish=date+dns+' '+m[month-1]+','+year;
-                $('input[name^=date]').val(dateEnglish);
+                $('input[name^=date]').eq(0).val(dateEnglish);
             });
 
 
@@ -183,24 +191,27 @@
                             oHotel.show();
                             var kHotel = $('.right .hotel').eq(0).clone(true);
                             kHotel.show()
-                            //第二步，循环生成左下角的酒店input框
-                            for(var i=0; i < addressArry.length; i++){
+                            //第二步，生成左下角的酒店input框
                                 oHotel.insertAfter($('.hotelF .hotel').last());
-                                $(oHotel).find('label').html(addressArry[i]);
+                                $(oHotel).find('label').html(content);
+                               var hotelindex=findHotel(content);
+                                console.log($(oHotel).find('input').eq(0).className);
+
+
 
                                 //第三步： 生成右下角酒店个数
-                                    $(kHotel).find('.locationAnchor').val(addressArry[i]); //修改隐藏input框里面的地点
-                                    $(kHotel).find('label').eq(0).html(addressArry[i]); //修改label里面的地点
+                                    $(kHotel).find('.locationAnchor').val(content); //修改隐藏input框里面的地点
+                                    $(kHotel).find('.locationAnchor').attr('name','location'+'[]'); //修改隐藏input框里面的name
+                                    $(kHotel).find('label').eq(0).html(content); //修改label里面的地点
                                     $(kHotel).find('.starAnchor').val(5); //修改隐藏input框里面的星级
+                                    $(kHotel).find('.starAnchor').attr('name','star'+'[]'); //修改隐藏input框里面的星级
                                     kHotel.insertAfter($('.right .hotel').last());
+                                    $(kHotel).find('.hotelCopyAnchor1').attr('name','hotel1'+'[]'); //修改隐藏input框里面的酒店1
+                                    $(kHotel).find('.hotelCopyAnchor2').attr('name','hotel2'+'[]'); //修改隐藏input框里面的酒店2
+
 
                             }
 
-
-
-
-
-                        }
                     });
                 }else{
                     var content=$(this).val();
@@ -210,6 +221,21 @@
 
             //调用行程码
             $('.day').on('change','textarea',function(){
+                var rawdata=$(this).attr('name');
+                var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
+                var name = rawdata.replace(/[0-9]/ig,"");
+                var tourCode=$(this).val();
+
+                $.get('/getpiece/'+tourCode,function(data){
+                    var json=eval('('+data+')');
+                    console.log(name);
+                    $('.right textarea[name^='+name+']').eq(anchor).html(json.content);
+                })
+            })
+
+            //调用酒店代码
+            $('.hotelF').on('change','input',function(){
+
                 var rawdata=$(this).attr('name');
 
                 var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
@@ -259,10 +285,10 @@
         <div class="col-md-12 hotel" id="hotel1" style="display:none;">
             <label class="col-md-3">""</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="酒店1" name=""/>
+                <input type="text" class="form-control" placeholder="酒店1" name="hotel1&"/>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="酒店2" name=""/>
+                <input type="text" class="form-control" placeholder="酒店2" name="hotel2&"/>
             </div>
         </div>
 
@@ -281,7 +307,8 @@
 </div>
 
 <div class="right">
-    <form class="form-horizontal" role="form" action="" method="get">
+    <form class="form-horizontal" role="form" action="/maketour" method="post">
+        {{csrf_field()}}
         <div class="panel panel-primary">
             <div class="panel-heading bg-info">报价单</div>
             <div class="panel-body">
@@ -325,12 +352,12 @@
                     <div class="col-md-12 hotel" style="display:none;">
                         <label class="col-md-2">beijing:</label>
                         <div class="col-md-3">
-                            <input type="hidden" class="locationAnchor"  name="location[]">
-                            <input type="hidden" class="starAnchor" value="3" name="star[]">
-                            <input type="text" class="form-control" placeholder="酒店one" name="hotel1[]" />
+                            <input type="hidden" class="locationAnchor"  >
+                            <input type="hidden" class="starAnchor" value="3" >
+                            <input type="text" class="form-control hotelCopyAnchor1"  placeholder="酒店one"  />
                         </div>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" placeholder="酒店two" name="hotel2[]" />
+                            <input type="text" class="form-control hotelCopyAnchor2"  placeholder="酒店two"  />
                         </div>
                     </div>
 
@@ -340,6 +367,9 @@
                     <h5 class="bg-info">注意事项</h5>
                 </div>
             </div>
+            {{--大人和小孩假数据--}}
+            <input type="text" name="adult" value="20">
+            <input type="text" name="children" value="3">
             <button type="submit" class="btn btn-primary btn-sm col-md-3">提交</button>
         </div>
     </form>

@@ -47,7 +47,7 @@ class QuoteController extends Controller
                    $q->qid= $qid;
                    $q->hotel1=$r->hotel1[$k];
                    $q->hotel2=$r->hotel2[$k];
-                   if (!empty($r->hotel1[0])){
+                   if (!empty($r->hotel1[0])&&!empty($r->hotel3[$k])){
                        $q->hotel3=$r->hotel3[$k];
                    }
                    $q->save();
@@ -72,6 +72,7 @@ class QuoteController extends Controller
         $a['location']=$r->cookie('location');//各个城市
         $cn=count($a['hotel']);
         $x= $a['hotel'];
+
         switch ($cn){
             case 2;
                 $a['hotel']= array_merge_recursive($x[0],$x[1]);
@@ -104,6 +105,7 @@ class QuoteController extends Controller
                 $a['hotel']= array_merge_recursive($x[0],$x[1],$x[2],$x[3],$x[4],$x[5],$x[6],$x[7],$x[8],$x[9],$x[10]);
                 break;
         }
+
         return view('quote.calculation',['data'=>$a]);
     }
 
