@@ -93,11 +93,19 @@
 
             //点击增加酒店个数
             $('.addHotel').click(function(){
-                var n=$('.hotel').eq(0).children().length;
-                if(n>=3 && n<4){
-                    $('.hotel').append('<div class="col-md-3">' +
-                            '<input type="text" class="form-control" placeholder="酒店3" name=""/>' +
-                            '</div>')
+                var n=$('.left .hotel').eq(1).find('input').length;
+                if(n==2){
+                        for(var i=0; i<addressArry.length; i++){
+                        	// 左下角酒店input框生成
+                            $('.left .hotel').eq(i+1).append('<div class="col-md-3">' +
+                                '<input type="text" class="form-control" placeholder="酒店3" name="hotel3[]"/>' +
+                                '</div>');
+                            //右下角酒店input框的生成
+							$('.right .hotel').eq(i+1).append('<div class="col-md-3">' +
+								'<input type="text" class="form-control" placeholder="酒店3" name="hotel3[]"/>' +
+								'</div>');
+
+                        }
                 }else{
                     alert('酒店最少两个最多三个！')
                 }
@@ -105,8 +113,8 @@
 
             //点击删除酒店个数
             $('.dltHotel').click(function(){
-                var n=$('.hotel').eq(0).children().length;
-                if(n==4){
+				var n=$('.hotel').eq(1).find('input').length;
+                if(n==3){
                     $('.hotel div:last-child').remove();
                 }else{
                     alert('酒店最少两个最多三个！')
@@ -184,7 +192,8 @@
 
                         //生成完毕以后，开始判断有几个地点，然后在左下角生成相应地点的酒店input框
                                 //第一步 ，判断是当前当前生成的地点否在数组addressArry里面，不在就放在里面
-                        if( $.inArray(content,addressArry) == -1){//如果在不数组里面,则是新的地点，放到数组中
+
+                        if(  ($.inArray(content,addressArry) == -1) && (content!=undefined)){//如果在不数组里面,则是新的地点，放到数组中
                             addressArry.push(content);
 
                             var oHotel=$('.left .hotel').eq(0).clone(true);
@@ -194,9 +203,10 @@
                             //第二步，生成左下角的酒店input框
                                 oHotel.insertAfter($('.hotelF .hotel').last());
                                 $(oHotel).find('label').html(content);
-                               var hotelindex=findHotel(content);
-                                console.log($(oHotel).find('input').eq(0).className);
+                               var hotelindex=findHotel(content);//酒店在数组addressArray中的索引位置
 
+                                $(oHotel).find('input').eq(0).attr('name',"hotel1&"+hotelindex); //重新给单个城市的第一个酒店命名
+                                $(oHotel).find('input').eq(1).attr('name',"hotel2&"+hotelindex);//重新给单个城市的第一个酒店命名
 
 
                                 //第三步： 生成右下角酒店个数
@@ -208,7 +218,22 @@
                                     kHotel.insertAfter($('.right .hotel').last());
                                     $(kHotel).find('.hotelCopyAnchor1').attr('name','hotel1'+'[]'); //修改隐藏input框里面的酒店1
                                     $(kHotel).find('.hotelCopyAnchor2').attr('name','hotel2'+'[]'); //修改隐藏input框里面的酒店2
+                                //第四步 判断是否第一个城市有三个酒店选择
+                                var cityNum = $('.left .hotel').length;
+                                if(cityNum>1){ //说明不是第一次自动生成相应城市酒店
+								inputNum=($('.left .hotel').eq(1).find('input').length);//计算当前第一个城市的有几个酒店选择
+								if( inputNum==3){
+									//如果第一个地点的酒店有第三个选择，则多一个酒店选择,左右2边对应生成input框
+									$('.left .hotel').eq(cityNum-1).append('<div class="col-md-3">' +
+										'<input type="text" class="form-control" placeholder="酒店3" name="hotel3&'+(cityNum-2)+'"/>' +
+										'</div>');
 
+									$('.right .hotel').eq(cityNum-1).append('<div class="col-md-3">' +
+										'<input type="text" class="form-control" placeholder="酒店3" name="hotel3[]"/>' +
+										'</div>');
+								}
+
+							}
 
                             }
 
@@ -237,7 +262,7 @@
             $('.hotelF').on('change','input',function(){
 
                 var rawdata=$(this).attr('name');
-
+                alert(rawdata);
                 var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
                 var name = rawdata.replace(/[0-9]/ig,"");
                 var tourCode=$(this).val();
