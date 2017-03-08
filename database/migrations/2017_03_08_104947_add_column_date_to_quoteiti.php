@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCityToItinerary extends Migration
+class AddColumnDateToQuoteiti extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,8 @@ class AddColumnCityToItinerary extends Migration
      */
     public function up()
     {
-        Schema::table('itinerarys', function (Blueprint $table) {
-
-            $table->string('city',8);
+        Schema::table('quoteiti', function (Blueprint $table) {
+            $table->string('date');
         });
     }
 
@@ -25,8 +24,8 @@ class AddColumnCityToItinerary extends Migration
      */
     public function down()
     {
-        Schema::table('itinerarys', function (Blueprint $table) {
-            //
+        Schema::table('quoteiti', function (Blueprint $table) {
+            $table->dropColumn('date');
         });
     }
 }

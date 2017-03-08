@@ -32,7 +32,8 @@ Route::get('/', 'HomeController@index'); //php artisan make:atuh 自动生成
 Route::get('/hotel', 'HotelController@show');
 Route::any('/hoteladd', 'HotelController@add');
 Route::any('/hotelEdit/{h?}', 'HotelController@edit');
-Route::get('gethotel/{id}','HotelController@hotelAjax');//ajax 获取酒店的信息
+Route::get('gethotel/{code}','HotelController@hotelAjax');//ajax 获取酒店的信息
+Route::get('checkhotelcode/{code}','HotelController@codeIfExist');//ajax 查询code是否已经重复
 
 /*
  * 餐厅类路由

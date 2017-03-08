@@ -6,6 +6,7 @@ use App\Hotel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
 
 class HotelController extends Controller
 {
@@ -88,6 +89,7 @@ class HotelController extends Controller
             $hotel->star=$r->star;
             $hotel->tel=$r->tel;
             $hotel->note=$r->note;
+            $hotel->code = $r->code;
 
             //1-12月份数据的搜集
             $m = ['jan','feb','mar','apr','may','june','july','aug','sep','oct','nov','dec'];
@@ -117,20 +119,18 @@ class HotelController extends Controller
    * Author:kevin_zkc@126.com
    * Date:2016-12-19
    * description:
-   *          请求：/gethotel/id     这里id是行程碎片的主键
-   *          如果有行程返回：
-                                      {
-                                       "itid": 1,
-                                       "content": "On Arrival, meet local guide and transfer to hotel.",
-                                       "code": "daoda",
-                                       "uid": 1,
-                                       "city": ""
-                                       }
-   *          如果没有返回：0
    */
-//    public function hotelAjax(Hotel $id){
-//        $data = $id->toArray();
-//        return empty($data)?'0':json_encode($data);
-//    }
+    public function hotelAjax(Hotel $id){
+        $data = $id->toArray();
+        return empty($data)?'0':json_encode($data);
+    }
+
+			/*
+		 * 查看代码在酒店表是否已经存在
+		 */
+		public function codeIfExist($code){
+			$data = Hotel::select('star','hname','enName')->where('code',$code)->first()->toArray();
+			return empty($data)?'0':json_encode($data);
+		}
 
 }

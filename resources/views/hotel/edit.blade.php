@@ -45,6 +45,17 @@
             $(this).prev().show();
         });
 
+		//检查酒店代码是否已经存在
+		$('#hotelcode').bind('change',function () {
+			var code = $(this).val();
+			$.get('checkhotelcode/'+code,function(data){
+				if(data!=0){
+					var usedHotel = JSON.parse(data).hname;
+					alert('对不起，该酒店代码已经在被（ '+usedHotel+' ）使用，请换个名字,要得不？');
+				}
+			});
+		});
+
     })
 </script>
 <body>
@@ -58,8 +69,14 @@
                 <input type="text" name="hname" class="form-control" value="{{$data->hname}}">
             </div>
         </div>
+        <div class="form-group col-sm-4">
+            <label  class="col-sm-2 control-label">报价代码</label>
+            <div class="col-sm-10">
+                <input type="text" name="code" class="form-control" id="hotelcode"  value="{{$data->code}}">
+            </div>
+        </div>
         <div class="form-group col-sm-4 ">
-            <label  class="col-sm-3 control-label">电话</label>
+            <label  class="col-sm-3 ">电话</label>
             <div class="col-sm-9">
                 <input type="text" name="tel" class="form-control"   value="{{$data->tel}}">
             </div>

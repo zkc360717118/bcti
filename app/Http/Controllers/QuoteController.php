@@ -9,6 +9,7 @@ use App\Quotepart;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -24,6 +25,7 @@ class QuoteController extends Controller
         return view('quote.maketour');
 //            return view('quote.test');
         }else{
+        	dd($r->all());
                 //首先保存总表quote
             $q= new Quote();
             $q->adult=$r->adult;
@@ -36,6 +38,7 @@ class QuoteController extends Controller
                     $im->location=$r->input("address.$i");
                     $im->meal = $r->input("meal.$i");
                     $im->iti = $r->input("iti.$i");
+//                    $im->date = $r->input("date.$i");
                     $im->pid = $qid;
 
                     $im->save();
@@ -74,6 +77,9 @@ class QuoteController extends Controller
         $x= $a['hotel'];
 
         switch ($cn){
+        	case 1;
+				$a['hotel']= array_merge_recursive($x[0]);
+				break;
             case 2;
                 $a['hotel']= array_merge_recursive($x[0],$x[1]);
                 break;
@@ -105,7 +111,7 @@ class QuoteController extends Controller
                 $a['hotel']= array_merge_recursive($x[0],$x[1],$x[2],$x[3],$x[4],$x[5],$x[6],$x[7],$x[8],$x[9],$x[10]);
                 break;
         }
-
+//		dd($a);
         return view('quote.calculation',['data'=>$a]);
     }
 
@@ -115,11 +121,14 @@ class QuoteController extends Controller
     public function storeQuote(Request $r ){
         //把各个区域的分报价保存起来
         for ($i=0; $i<count($r->hotel);$i++){
-            $q = new Quotepart();
-            $q->content=$r->hotel[$i];
-            $q->city=$r->city;
-            $q->pid=$r->pid;
-            $q->save();
+        	if($r->hotel[$i]!=''){
+				$q = new Quotepart();
+				$q->content=$r->hotel[$i];
+				$q->city=$r->city;
+				$q->pid=$r->pid;
+				$q->save();
+			}
+
         }
     }
     /*
@@ -142,16 +151,17 @@ class QuoteController extends Controller
         //第一步 查出所有报价信息
         $a = $qid->load('hotel')->load('iti')->load('quotepart')->toArray();
 
-
         //第二步 赋值行程
         $iticount = count($a['iti']); //行程的天数
         $bcti->cloneRow('day',$iticount);
+
         foreach ($a['iti'] as $k=>$v){
             $daynum = $k+1;
             $bcti->setValue('day#'.$daynum,'Day'.$daynum);
             $bcti->setValue('city#'.$daynum,$v['location']);
             $bcti->setValue('meal#'.$daynum,$v['meal']);
             $bcti->setValue('body#'.$daynum,$v['iti']);
+            $bcti->setValue('time#'.$daynum,'20151101');
 
         }
 
@@ -159,6 +169,7 @@ class QuoteController extends Controller
         $bcti->setValue('adult',$a['adult']);
         $bcti->setValue('children',$a['children']);
         //第四步 赋值报价酒店部分
+		$bcti->setValue('ss',111);
         $hnum = count($a['hotel']);
         $hotelprocess1=[];
         for ($i=0; $i<$hnum; $i++){
@@ -178,7 +189,7 @@ class QuoteController extends Controller
             if($hotelprocess1[$k]['hotel2']){
                 $hotelprocess2['hotel2'][]=$hotelprocess1[$k]['hotel2'];
             }
-            if($hotelprocess1[$k]['hotel3']){
+            if(isset($hotelprocess1[$k]['hotel3'])){
                 $hotelprocess2['hotel3'][]=$hotelprocess1[$k]['hotel3'];
             }
         }
@@ -209,13 +220,19 @@ class QuoteController extends Controller
         foreach($a['iti'] as $v){
             $meal.=$v['meal'];
         }
+		$dinnernum = substr_count($meal,'d')+substr_count($meal,'D');
+		$lunchnum = substr_count($meal,'l')+substr_count($meal,'L');
+        $bcti->setValue('dinner',$dinnernum);
+        $bcti->setValue('lunch',$lunchnum);
 
-        $bcti->setValue('dinner',substr_count($meal,'D'));
-        $bcti->setValue('lunch',substr_count($meal,'L'));
+        //生成的文档为Word
+		date_default_timezone_set('Asia/Shanghai');
+		$currentTime = date('Y_m_d_H_i_s',time());
+		$name = Auth::user()->email;
+		$path = $currentTime.'_'.$name.'kevin.docx';
+        $bcti->saveAs($path);
 
-        //生成的文档为Word2007
-        $bcti->saveAs('kevin.docx');
-        echo 1;
+        return view('quote.download',['path'=>$path]);
 
     }
 

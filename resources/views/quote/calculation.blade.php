@@ -28,21 +28,33 @@
                 </tr>
              @endforeach
         </table>
+        @if(count($data['hotel']['hotel1'])===1)
+            <div>option1</div>
+                <div>{{$data['hotel']['hotel1']}}</div>
+            <div>option2</div>
+            <div>{{$data['hotel']['hotel2']}}</div>
+            @if($data['hotel']['hotel3']!='')
+                <div>option3</div>
+                <div>{{$data['hotel']['hotel3']}}</div>
+            @endif
+        @else
+                <div>option1</div>
+                @foreach($data['hotel']['hotel1'] as $k=>$v)
+                    <div>{{$v}}</div>
+                @endforeach
+                <div>option2</div>
+                @foreach($data['hotel']['hotel2'] as $k=>$v)
+                    <div>{{$v}}</div>
+                @endforeach
+                @if($data['hotel']['hotel3']!='')
+                    <div>option3</div>
+                    @foreach($data['hotel']['hotel3'] as $k=>$v)
+                        <div>{{$v}}</div>
+                    @endforeach
+                @endif
+        @endif
 
-        <div>三星</div>
-        @foreach($data['hotel']['hotel1'] as $k=>$v)
-            <div>{{$v}}</div>
-        @endforeach
-        <div>四星</div>
 
-        @foreach($data['hotel']['hotel2'] as $k=>$v)
-            <div>{{$v}}</div>
-        @endforeach
-        <div>五星</div>
-
-        @foreach($data['hotel']['hotel3'] as $k=>$v)
-            <div>{{$v}}</div>
-        @endforeach
     </div>
 
     <div class="middle" style="float: left;width:400px; border:1px solid yellow">
@@ -76,10 +88,10 @@
         <form action="/storequote" method="post" class="form-horizontal">
             {{csrf_field()}}
             <input type="hidden" name="city" value="{{$data['location'][$i]}}">
-            <input type="hidden" id="pidanchor" name="pid" value="{{$data['pid']}}">
+            <input type="hidden" id="pidanchor" name="pid" value="{{$data['pid']}}"><br>
             酒店1：<textarea name="hotel[]" class="receive1" cols="50" rows="2"></textarea><br>
             酒店2：<textarea name="hotel[]" class="receive2" cols="50" rows="2"></textarea><br>
-            酒店3：<textarea name="hotel[]" class="receive3" cols="50" rows="2"></textarea>
+            酒店3：<textarea name="hotel[]" class="receive3" cols="50" rows="2"></textarea><br>
             <input type="text" class="store1">
             <input type="text" class="store2">
             <input type="text" class="store3">
@@ -258,15 +270,11 @@
                 success:function(){
                         if(j==eval(da.length-1)){
                             alert('报价计算完成，进入下载页面，不要激动');
+                            window.location.href="/word/"+pid;
                         }
                      }
             });
         }
-
-        //
-
-
-
         e.preventDefault();
     });
 

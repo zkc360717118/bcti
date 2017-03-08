@@ -46,6 +46,14 @@
                     }
                 }
             }
+
+            //封装一个酒店星级查询的功能，供下面调用
+//            function getHotelStar(code){
+//				$.get('/checkhotelcode/'+code,function(data){
+//					var result = JSON.parse(data).star;
+//					return (result);
+//				})
+//            }
             //点击增加行程,numDay为天数
             $('.addDay').click(function(){
                 numDay++;
@@ -60,6 +68,7 @@
 
                 //报价单跟着numDay增加天数
                 var oqDay=$('.qDay').eq(0).clone(true);
+//                console.log($('.qDay').eq(0).find('input').eq(0).val()+1);
                 oqDay.children().eq(0).html('第'+arr[numDay-1]+'天');
                 oqDay.children().eq(1).children().eq(0).attr('name','date'+'[]');
                 oqDay.children().eq(2).children().eq(0).attr('name','address'+'[]');
@@ -71,7 +80,7 @@
 
                 //把日期加一天
 
-                /* $('tbody').append('<tr class="qDay"><td>第'+arr[numDay-1]+'天</td><td><input type="text" name="date'+numDay+'" placeholder="请输入行程日期"/></td><td><input type="text" class="qaddress" name="address'+numDay+'" placeholder="请输入行程的地点"/></td><td><input type="text" name="meal'+numDay+'" placeholder="餐标"/></td><td><textarea name="tourCode'+numDay+'"  cols="35" rows="2"></textarea></td></tr>');*/
+//              $('tbody').append('<tr class="qDay"><td>第'+arr[numDay-1]+'天</td><td><input type="text" name="date'+numDay+'" placeholder="请输入行程日期"/></td><td><input type="text" class="qaddress" name="address'+numDay+'" placeholder="请输入行程的地点"/></td><td><input type="text" name="meal'+numDay+'" placeholder="餐标"/></td><td><textarea name="tourCode'+numDay+'"  cols="35" rows="2"></textarea></td></tr>');
 
             });
 
@@ -98,7 +107,7 @@
                         for(var i=0; i<addressArry.length; i++){
                         	// 左下角酒店input框生成
                             $('.left .hotel').eq(i+1).append('<div class="col-md-3">' +
-                                '<input type="text" class="form-control" placeholder="酒店3" name="hotel3[]"/>' +
+                                '<input type="text" class="form-control" placeholder="酒店3" name="hotel3&' +i+ '"/>' +
                                 '</div>');
                             //右下角酒店input框的生成
 							$('.right .hotel').eq(i+1).append('<div class="col-md-3">' +
@@ -213,7 +222,6 @@
                                     $(kHotel).find('.locationAnchor').val(content); //修改隐藏input框里面的地点
                                     $(kHotel).find('.locationAnchor').attr('name','location'+'[]'); //修改隐藏input框里面的name
                                     $(kHotel).find('label').eq(0).html(content); //修改label里面的地点
-                                    $(kHotel).find('.starAnchor').val(5); //修改隐藏input框里面的星级
                                     $(kHotel).find('.starAnchor').attr('name','star'+'[]'); //修改隐藏input框里面的星级
                                     kHotel.insertAfter($('.right .hotel').last());
                                     $(kHotel).find('.hotelCopyAnchor1').attr('name','hotel1'+'[]'); //修改隐藏input框里面的酒店1
@@ -253,7 +261,6 @@
 
                 $.get('/getpiece/'+tourCode,function(data){
                     var json=eval('('+data+')');
-                    console.log(name);
                     $('.right textarea[name^='+name+']').eq(anchor).html(json.content);
                 })
             })
@@ -262,17 +269,42 @@
             $('.hotelF').on('change','input',function(){
 
                 var rawdata=$(this).attr('name');
-                alert(rawdata);
-                var anchor = rawdata.replace(/[^0-9]/ig,"")-1;  //查找所有不含0-9的内容，然后忽略大小写，，同时全文检索， 换成空
-                var name = rawdata.replace(/[0-9]/ig,"");
-                var tourCode=$(this).val();
+                rawdata = rawdata.split('&');
 
-                $.get('/getpiece/'+tourCode,function(data){
+                var line = rawdata[1];//第几行
+                var hotelWhat = rawdata[0]; //当前地点的第几列酒店选项，是hotel1 还是hotel2.。。
+
+                var tourCode = $(this).val();
+               $.get('/checkhotelcode/'+tourCode,function(data){
                     var json=eval('('+data+')');
-                    console.log(name);
-                    $('.right textarea[name^='+name+']').eq(anchor).html(json.content);
+                    //赋值给右边对应的input框
+				   $('.right input[name^='+hotelWhat+']').eq(line).val(json.enName);
+				   $('.right input[name^='+hotelWhat+']').eq(line).prev().val(json.star);
+				   //如果是第一行的酒店input框，那么就按照改行所有酒店的信息，生成右边对应酒店的星级
+                   if(line==0){
+                   	    //查询出当前input框对应酒店的星级
+					   $.get('/checkhotelcode/'+tourCode,function(data){
+					   	    var hotelStar = JSON.parse(data).star;
+						   if(hotelWhat=="hotel1"){
+                                $('#hotelStarAnchor1').html(hotelStar);
+
+						   }else if(hotelWhat=="hotel2"){
+						   	$('#hotelStarAnchor2').html(hotelStar);
+						   }else if(hotelWhat=="hotel3"){
+							   $('#hotelStarAnchor3').html(hotelStar);
+						   }
+					   })
+                   }
                 })
             })
+
+
+			//赋值大人和小孩数量
+            $('.peopleNumArea').on('change','input',function(){
+				$('#adultReceiver').val($('#adultAnchor').val());
+				$('#childReceiver').val($('#childrenAnchor').val());
+            });
+
         })
     </script>
 </head>
@@ -324,8 +356,9 @@
     <div class="container">
         <div class="col-md-12">
             <label class="col-md-3">总人数:</label>
-            <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="总人数" name=""/>
+            <div class="col-md-4 peopleNumArea">
+                <input type="text" class="form-control inline" placeholder="大人数" id="adultAnchor"/>
+                <input type="text" class="form-control inline" placeholder="小孩数" id="childrenAnchor"/>
             </div>
         </div>
     </div>
@@ -364,14 +397,11 @@
                 <div class="container">
                     <div class="col-md-12 quote_hotel_anchor1">
                         <label class="col-md-2"></label>
-                        <div class="col-md-3">
-                            三星级
+                        <div class="col-md-3" id="hotelStarAnchor1">
                         </div>
-                        <div class="col-md-3">
-                            四星级
+                        <div class="col-md-3" id="hotelStarAnchor2">
                         </div>
-                        <div class="col-md-3">
-                            五星级
+                        <div class="col-md-3" id="hotelStarAnchor3">
                         </div>
                     </div>
                     <div class="col-md-12 hotel" style="display:none;">
@@ -385,16 +415,14 @@
                             <input type="text" class="form-control hotelCopyAnchor2"  placeholder="酒店two"  />
                         </div>
                     </div>
-
-
                 </div>
                 <div>
-                    <h5 class="bg-info">注意事项</h5>
+                    <h5 class="bg-info">人数</h5>
+                    大人：<input type="text" id="adultReceiver" name="adult" value="">
+                    小孩：<input type="text" id="childReceiver" name="children" value="">
                 </div>
             </div>
-            {{--大人和小孩假数据--}}
-            <input type="text" name="adult" value="20">
-            <input type="text" name="children" value="3">
+
             <button type="submit" class="btn btn-primary btn-sm col-md-3">提交</button>
         </div>
     </form>
