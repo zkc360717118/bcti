@@ -30,7 +30,9 @@
                         </li>
 
                         <li class="divider"></li>
-                        <li><a href="/maketour">英文报价</a>
+                        <li><a href="/maketour">英文报价(自己造行程)</a>
+                        </li>
+                        <li><a href="/maketourhaveiti">英文报价（阿三有行程）</a>
                         </li>
                     </ul>
                 </li>

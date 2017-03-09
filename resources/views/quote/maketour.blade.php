@@ -357,8 +357,8 @@
         <div class="col-md-12">
             <label class="col-md-3">总人数:</label>
             <div class="col-md-4 peopleNumArea">
-                <input type="text" class="form-control inline" placeholder="大人数" id="adultAnchor"/>
-                <input type="text" class="form-control inline" placeholder="小孩数" id="childrenAnchor"/>
+                <input type="hidden" class="form-control inline" placeholder="大人数" id="adultAnchor"/>
+                <input type="hidden" class="form-control inline" placeholder="小孩数" id="childrenAnchor"/>
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddCollumnRateUidToQuote' => $baseDir . '/database/migrations/2017_03_09_115045_add_collumn_rate_uid_to_quote.php',
     'AddColumnCodeToHotels' => $baseDir . '/database/migrations/2017_03_08_031039_add_column_code_to_hotels.php',
     'AddColumnDateToQuoteiti' => $baseDir . '/database/migrations/2017_03_08_104947_add_column_date_to_quoteiti.php',
     'AddColumnTypeToPiece' => $baseDir . '/database/migrations/2016_12_22_133821_add_column_type_toPiece.php',
@@ -23,6 +24,7 @@ return array(
     'CreateTableQuote' => $baseDir . '/database/migrations/2017_01_03_011608_create_table_quote.php',
     'CreateTableQuoteH' => $baseDir . '/database/migrations/2017_01_03_011718_create_table_quoteH.php',
     'CreateTableQuoteI' => $baseDir . '/database/migrations/2017_01_03_011801_create_table_quoteI.php',
+    'CreateTableQuoteitisol' => $baseDir . '/database/migrations/2017_03_09_064023_create_table_quoteitisol.php',
     'CreateTableTicket' => $baseDir . '/database/migrations/2016_11_28_134910_create_table_ticket.php',
     'CreateTablesQuotepart' => $baseDir . '/database/migrations/2017_01_09_082458_create_tables_quotepart.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',

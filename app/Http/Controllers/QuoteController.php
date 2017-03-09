@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Quote;
 use App\Quotehotel;
 use App\Quoteiti;
+use App\Quoteitisolo;
 use App\Quotepart;
 use Illuminate\Http\Request;
 
@@ -18,14 +19,13 @@ use PhpOffice\PhpWord\TemplateProcessor;
 class QuoteController extends Controller
 {
     /*
-     * 行程制作并保存
+     * 报价行程制作1，并保存。
      */
     public function maketour(Request $r){
         if(empty($_POST)){
         return view('quote.maketour');
 //            return view('quote.test');
         }else{
-        	dd($r->all());
                 //首先保存总表quote
             $q= new Quote();
             $q->adult=$r->adult;
@@ -65,13 +65,62 @@ class QuoteController extends Controller
     }
 
     /*
+     * 客户行程已经有了，直接处理，然后跳转到下面calculate方法去计算
+     *
+     */
+	public function maketourHaveIti(Request $r){
+		if(empty($_POST)){
+			return view('quote.maketourhaveiti');
+		}else{
+			//首先保存总表quote
+			$q= new Quote();
+			$q->adult=$r->adult;
+			$q->children = $r->children;
+			$q->save();
+			$qid =$q->pid;
+
+			// 保存行程表
+
+				$im = new Quoteitisolo();
+				$im->content=str_replace("\r\n",'&&&',$_POST['content']);
+				$im->qid = $qid;
+				$im->save();
+
+			//保存报价酒店信息
+			for($k=0;$k<count($r->location);$k++){
+				$q =new Quotehotel();
+				$q->location = $r->location[$k];
+				$q->qid= $qid;
+				$q->hotel1=$r->hotel1[$k];
+				$q->hotel2=$r->hotel2[$k];
+				if (!empty($r->hotel1[0])&&!empty($r->hotel3[$k])){
+					$q->hotel3=$r->hotel3[$k];
+				}
+				 $q->save();
+			}
+//			die;
+			//把人数，地点，放在cookie
+			return redirect("/calculate/$qid")
+				->withCookie(cookie('adult',$r->adult))
+				->withCookie(cookie('children',$r->children))
+				->withCookie(cookie('location',$r->location));
+		}
+	}
+
+    /*
      * 报价输入页面
      */
     public function calculate(Quote $qid,Request $r){
+
         //利用calculate（）括号里面的依赖注入，加上eloquent orm关系查到2个方向的一对多关系（1，对应的酒店 2，对应的行程）
-        $a = $qid->load('hotel')->load('iti')->toArray();
+        $a = $qid->load('hotel')->load('iti2')->load('iti')->toArray();
+		if(!isset($a['iti'][0])){
+			$a['iti2']=explode('&&&',$a['iti2'][0]['content']);
+		}
+//        dd($a['iti2'][0]['content']);
         $a['adult']=$r->cookie('adult');//团队大人数量
         $a['children']=$r->cookie('children');//小孩数量
+        $a['foc']=floor(($a['adult']+$a['children'])/16);//foc数量
         $a['location']=$r->cookie('location');//各个城市
         $cn=count($a['hotel']);
         $x= $a['hotel'];
@@ -145,25 +194,41 @@ class QuoteController extends Controller
      * 生成报价word文档，利用phpword
      */
     public function word(Quote $qid){
+		//第一步 查出所有报价信息,引入对应的模板
+		$a = $qid->load('hotel')->load('iti')->load('iti2')->load('quotepart')->toArray();
+		if(isset($a['iti'][0])){
+			$bcti =new TemplateProcessor(base_path().'/quote_tep1.docx');
+		}else{
+			$bcti =new TemplateProcessor(base_path().'/quote_tep2.docx');
+		}
 
-        $bcti =new TemplateProcessor(base_path().'/quote_tep.docx');
 
-        //第一步 查出所有报价信息
-        $a = $qid->load('hotel')->load('iti')->load('quotepart')->toArray();
+		//第二步 赋值行程
+		if(isset($a['iti'][0])){
+			$iticount = count($a['iti']); //行程的天数
+			$bcti->cloneRow('day',$iticount);
 
-        //第二步 赋值行程
-        $iticount = count($a['iti']); //行程的天数
-        $bcti->cloneRow('day',$iticount);
+			foreach ($a['iti'] as $k=>$v){
+				$daynum = $k+1;
+				$bcti->setValue('day#'.$daynum,'Day'.$daynum);
+				$bcti->setValue('city#'.$daynum,$v['location']);
+				$bcti->setValue('meal#'.$daynum,$v['meal']);
+				$bcti->setValue('body#'.$daynum,$v['iti']);
+				$bcti->setValue('time#'.$daynum,'20151101');
 
-        foreach ($a['iti'] as $k=>$v){
-            $daynum = $k+1;
-            $bcti->setValue('day#'.$daynum,'Day'.$daynum);
-            $bcti->setValue('city#'.$daynum,$v['location']);
-            $bcti->setValue('meal#'.$daynum,$v['meal']);
-            $bcti->setValue('body#'.$daynum,$v['iti']);
-            $bcti->setValue('time#'.$daynum,'20151101');
+			}
+		}else{
+			$a['iti2']=array_filter(explode('&&&',$a['iti2'][0]['content']));
+			$iticount = count($a['iti2']); //行程的天数
+//			dd($a['iti2']);
+			$bcti->cloneRow('content',$iticount);
+			foreach ($a['iti2'] as $k=>$v){
+				$daynum = $k+1;
+				$bcti->setValue('content#'.$daynum,$v);
 
-        }
+			}
+		}
+
 
         //第三步 赋值大人和小孩数量
         $bcti->setValue('adult',$a['adult']);
@@ -171,6 +236,7 @@ class QuoteController extends Controller
         //第四步 赋值报价酒店部分
 		$bcti->setValue('ss',111);
         $hnum = count($a['hotel']);
+//        dd($a);
         $hotelprocess1=[];
         for ($i=0; $i<$hnum; $i++){
             $hotelprocess1[$i]['hotel1']=$a['hotel'][$i]['location'].":".$a['hotel'][$i]['hotel1']."or similar";

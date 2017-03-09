@@ -292,6 +292,7 @@ class ComposerStaticInitbc95b19571731e6262955d364f4725c5
     );
 
     public static $classMap = array (
+        'AddCollumnRateUidToQuote' => __DIR__ . '/../..' . '/database/migrations/2017_03_09_115045_add_collumn_rate_uid_to_quote.php',
         'AddColumnCodeToHotels' => __DIR__ . '/../..' . '/database/migrations/2017_03_08_031039_add_column_code_to_hotels.php',
         'AddColumnDateToQuoteiti' => __DIR__ . '/../..' . '/database/migrations/2017_03_08_104947_add_column_date_to_quoteiti.php',
         'AddColumnTypeToPiece' => __DIR__ . '/../..' . '/database/migrations/2016_12_22_133821_add_column_type_toPiece.php',
@@ -309,6 +310,7 @@ class ComposerStaticInitbc95b19571731e6262955d364f4725c5
         'CreateTableQuote' => __DIR__ . '/../..' . '/database/migrations/2017_01_03_011608_create_table_quote.php',
         'CreateTableQuoteH' => __DIR__ . '/../..' . '/database/migrations/2017_01_03_011718_create_table_quoteH.php',
         'CreateTableQuoteI' => __DIR__ . '/../..' . '/database/migrations/2017_01_03_011801_create_table_quoteI.php',
+        'CreateTableQuoteitisol' => __DIR__ . '/../..' . '/database/migrations/2017_03_09_064023_create_table_quoteitisol.php',
         'CreateTableTicket' => __DIR__ . '/../..' . '/database/migrations/2016_11_28_134910_create_table_ticket.php',
         'CreateTablesQuotepart' => __DIR__ . '/../..' . '/database/migrations/2017_01_09_082458_create_tables_quotepart.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',

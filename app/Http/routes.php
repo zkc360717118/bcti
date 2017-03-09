@@ -77,6 +77,7 @@ Route::get('/getcompanycontact/{cid}','CrmController@contactJson');
  *报价类路由！！important!!
  */
 Route::any('/maketour','QuoteController@maketour');
+Route::any('/maketourhaveiti','QuoteController@maketourHaveIti');
 Route::any('/calculate/{qid}','QuoteController@calculate');
 Route::post('/storequote','QuoteController@storeQuote');
 Route::any('/finalquote/{pid}','QuoteController@storeFinalQuote');

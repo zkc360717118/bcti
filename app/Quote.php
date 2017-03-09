@@ -17,6 +17,12 @@ class Quote extends Model
     public function iti(){
         return $this->hasMany('App\Quoteiti','pid','pid');
     }
+	/*
+	* 一个总报价包含的行程信息
+	*/
+	public function iti2(){
+		return $this->hasMany('App\Quoteitisolo','qid','pid');
+	}
 
     /*
     一个总报价包含的酒店信息
